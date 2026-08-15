@@ -1,0 +1,5 @@
+.DS_Store
+dist/
+*.dmg
+Assets/variations/
+Assets/app-icon-master.prev.jpg
