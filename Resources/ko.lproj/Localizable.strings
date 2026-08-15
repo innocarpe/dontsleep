@@ -1,57 +1,51 @@
 "menu.turnOn" = "켜기";
 "menu.turnOff" = "끄기";
-"menu.startAtLogin" = "로그인할 때 시작";
+"menu.startAtLogin" = "로그인 시 열기";
 "menu.installHelper" = "덮개 제어 허용…";
-"menu.howTo" = "사용 방법…";
+"menu.howTo" = "쓰는 법…";
 "menu.refresh" = "새로고침";
 "menu.quit" = "종료";
 
-"setup.title" = "처음 한 번만 설정";
-"setup.message" = "DontSleep이 덮개 닫힘 슬립을 바꾸려면 권한이 필요합니다. macOS가 관리자 비밀번호를 한 번 묻습니다. sudo 전체가 아니라 pmset 두 명령만 허용합니다.";
-"setup.continue" = "계속";
-"setup.later" = "나중에";
-"menu.status.on" = "지금: 켜짐 (덮개를 닫아도 깨어 있음)";
-"menu.status.off" = "지금: 꺼짐 (덮개를 닫으면 잠)";
-"menu.status.unknown" = "지금: 상태 불명";
+"menu.status.on" = "켜짐 — 덮개 닫아도 안 잠듦";
+"menu.status.off" = "꺼짐 — 덮개 닫으면 잠";
+"menu.status.unknown" = "상태 불명";
 
-"tooltip.on" = "DontSleep 켜짐 — 덮개를 닫아도 잠들지 않음";
-"tooltip.off" = "DontSleep 꺼짐 — 덮개를 닫으면 잠듦";
-"tooltip.unknown" = "DontSleep — 상태를 읽지 못함";
+"tooltip.on" = "켜짐. 덮개 닫아도 안 잠듦.";
+"tooltip.off" = "꺼짐. 덮개 닫으면 잠.";
+"tooltip.unknown" = "상태를 못 읽음";
 
 "error.spawn" = "실행 실패: %@";
 "error.command" = "%@ 종료 코드 %d";
 "error.commandDetail" = "%@ 종료 코드 %d — %@";
-"error.sudoers" = "덮개 슬립을 아직 바꿀 수 없습니다. 설정 창에서 Enter를 누르고 비밀번호를 허용하세요.";
-"error.verify" = "설정을 바꿨는데 pmset 상태가 따라오지 않았습니다.";
+"error.sudoers" = "아직 권한이 없습니다. 설정 창에서 Enter 를 누르세요.";
+"error.verify" = "pmset 값이 바뀌지 않았습니다.";
 
-"onboard.progress" = "%d / %d 단계";
+"onboard.progress" = "%d / %d";
 "onboard.continue" = "계속";
 "onboard.back" = "뒤로";
 "onboard.later" = "나중에";
 "onboard.allow" = "실행";
 "onboard.done" = "완료";
 
-"onboard.welcome.title" = "DontSleep에 오신 것을 환영합니다";
-"onboard.welcome.body1" = "맥북 덮개를 닫으면 보통 잠듭니다. DontSleep은 그 동작을 끄므로, 배터리든 전원이든 덮개를 닫아도 깨어 있게 할 수 있습니다.";
-"onboard.welcome.body2" = "유휴 슬립을 막는 것과는 다릅니다. caffeinate 같은 도구는 덮개가 열린 상태에서만 잠을 막습니다.";
+"onboard.welcome.title" = "덮개 닫아도 안 잠듦";
+"onboard.welcome.body1" = "켜 두면 덮개를 닫아도 맥이 잠들지 않습니다. 배터리든 어댑터든 같습니다.";
+"onboard.welcome.body2" = "caffeinate 는 덮개를 닫으면 끝입니다. 이건 아닙니다.";
 
-"onboard.permission.title" = "덮개 제어를 허용하세요";
-"onboard.permission.why" = "덮개 닫힘 슬립은 시스템 설정입니다. 아래 명령을 이 창에서 실행하세요. 별도의 터미널은 필요 없습니다.";
-"onboard.permission.what" = "지금 계정만, pmset -a disablesleep 1 과 0 만 허용합니다. 비밀번호는 한 번입니다 (Touch ID 가능).";
-"onboard.permission.cmdOn" = "pmset -a disablesleep 1   덮개를 닫아도 깨어 있음";
-"onboard.permission.cmdOff" = "pmset -a disablesleep 0   덮개를 닫으면 잠";
-"onboard.permission.scope" = "그 외 sudo는 열리지 않습니다. 나중에 sudo rm /etc/sudoers.d/dontsleep 로 지울 수 있습니다.";
-"onboard.permission.hint" = "Enter를 눌러 명령을 실행하세요.";
+"onboard.permission.title" = "비밀번호 한 번";
+"onboard.permission.why" = "이 창에서 명령을 실행하면 됩니다. macOS가 비밀번호를 묻습니다.";
+"onboard.permission.what" = "이 계정으로 /etc/sudoers.d/dontsleep 을 씁니다. 허용은 pmset -a disablesleep 1 과 0 뿐입니다.";
+"onboard.permission.scope" = "지울 때: sudo rm /etc/sudoers.d/dontsleep";
+"onboard.permission.hint" = "Enter 로 실행";
 "onboard.permission.copy" = "복사";
 "onboard.permission.copied" = "복사됨";
 "onboard.permission.success" = "wrote /etc/sudoers.d/dontsleep";
 
-"onboard.usage.title" = "사용 방법";
-"onboard.usage.on" = "채워진 노트북: 켜짐. 덮개를 닫아도 잠들지 않습니다.";
-"onboard.usage.off" = "윤곽 노트북: 꺼짐. 덮개를 닫으면 잠듭니다.";
-"onboard.usage.click" = "메뉴바 아이콘을 왼쪽 클릭하면 켜고 끌 수 있습니다.";
-"onboard.usage.menu" = "오른쪽 클릭(또는 Control-클릭)하면 메뉴가 열립니다. 로그인 시 시작, 이 안내, 종료.";
+"onboard.usage.title" = "메뉴바";
+"onboard.usage.on" = "켜짐. 덮개 닫아도 안 잠듦.";
+"onboard.usage.off" = "꺼짐. 덮개 닫으면 잠.";
+"onboard.usage.click" = "아이콘을 누르면 켜고 끕니다.";
+"onboard.usage.menu" = "오른쪽 클릭이 나머지 메뉴입니다.";
 
-"onboard.safety.title" = "하나만 기억하세요";
-"onboard.safety.body" = "DontSleep이 켜져 있으면 덮개를 닫아도 잠들지 않습니다. 가방에 넣기 전에 끄세요.";
-"onboard.safety.login" = "로그인할 때 DontSleep 시작";
+"onboard.safety.title" = "가방 전에 끄기";
+"onboard.safety.body" = "켜 둔 채로 덮개를 닫으면 잠들지 않습니다.";
+"onboard.safety.login" = "로그인 시 열기";

@@ -1,57 +1,51 @@
 "menu.turnOn" = "开启";
 "menu.turnOff" = "关闭";
-"menu.startAtLogin" = "登录时启动";
-"menu.installHelper" = "允许控制合盖休眠…";
-"menu.howTo" = "使用方法…";
+"menu.startAtLogin" = "登录时打开";
+"menu.installHelper" = "允许合盖控制…";
+"menu.howTo" = "怎么用…";
 "menu.refresh" = "刷新";
 "menu.quit" = "退出";
 
-"setup.title" = "一次性设置";
-"setup.message" = "DontSleep 需要权限才能更改合盖休眠。macOS 会询问一次管理员密码。只会允许两条 pmset 命令，不会开放全部 sudo。";
-"setup.continue" = "继续";
-"setup.later" = "稍后";
-"menu.status.on" = "当前：已开启（合盖后仍保持唤醒）";
-"menu.status.off" = "当前：已关闭（合盖后休眠）";
-"menu.status.unknown" = "当前：状态未知";
+"menu.status.on" = "开 — 合盖也不睡";
+"menu.status.off" = "关 — 合盖就睡";
+"menu.status.unknown" = "状态未知";
 
-"tooltip.on" = "DontSleep 已开启 — 合盖后仍保持唤醒";
-"tooltip.off" = "DontSleep 已关闭 — 合盖后会休眠";
-"tooltip.unknown" = "DontSleep — 无法读取状态";
+"tooltip.on" = "开。合盖也不睡。";
+"tooltip.off" = "关。合盖就睡。";
+"tooltip.unknown" = "读不到状态";
 
 "error.spawn" = "无法启动 %@";
 "error.command" = "%@ 退出，状态码 %d";
 "error.commandDetail" = "%@ 退出，状态码 %d — %@";
-"error.sudoers" = "仍无法更改合盖休眠。请在设置窗口中按 Enter，并批准密码提示。";
-"error.verify" = "已更改设置，但 pmset 未报告对应状态。";
+"error.sudoers" = "还没有权限。在设置窗口按 Enter。";
+"error.verify" = "pmset 的值没有变。";
 
-"onboard.progress" = "第 %d 步，共 %d 步";
+"onboard.progress" = "%d / %d";
 "onboard.continue" = "继续";
 "onboard.back" = "返回";
 "onboard.later" = "稍后";
 "onboard.allow" = "运行";
 "onboard.done" = "完成";
 
-"onboard.welcome.title" = "欢迎使用 DontSleep";
-"onboard.welcome.body1" = "合上 MacBook 盖子通常会让电脑休眠。DontSleep 可以关掉该行为，让电脑在电池或电源下合盖后仍保持唤醒。";
-"onboard.welcome.body2" = "这和“防止空闲休眠”不同。caffeinate 一类工具只在盖子已经打开时阻止休眠。";
+"onboard.welcome.title" = "合盖也不睡";
+"onboard.welcome.body1" = "开着的时候，合上盖子电脑也不会休眠。电池或电源都一样。";
+"onboard.welcome.body2" = "caffeinate 合盖就失效。这个不会。";
 
-"onboard.permission.title" = "允许控制合盖休眠";
-"onboard.permission.why" = "合盖休眠是系统设置。请在此窗口运行下面的命令，无需打开“终端”。";
-"onboard.permission.what" = "仅当前账户，且只允许 pmset -a disablesleep 1 和 0。密码只问一次（支持 Touch ID）。";
-"onboard.permission.cmdOn" = "pmset -a disablesleep 1   合盖后保持唤醒";
-"onboard.permission.cmdOff" = "pmset -a disablesleep 0   合盖后休眠";
-"onboard.permission.scope" = "不会开放其他 sudo。以后可用 sudo rm /etc/sudoers.d/dontsleep 删除。";
-"onboard.permission.hint" = "按 Enter 运行命令。";
+"onboard.permission.title" = "一次密码";
+"onboard.permission.why" = "在这个窗口运行命令。macOS 会要密码。";
+"onboard.permission.what" = "给当前用户写 /etc/sudoers.d/dontsleep。只允许 pmset -a disablesleep 1 和 0。";
+"onboard.permission.scope" = "删除：sudo rm /etc/sudoers.d/dontsleep";
+"onboard.permission.hint" = "按 Enter 运行";
 "onboard.permission.copy" = "复制";
 "onboard.permission.copied" = "已复制";
 "onboard.permission.success" = "wrote /etc/sudoers.d/dontsleep";
 
-"onboard.usage.title" = "怎么用";
-"onboard.usage.on" = "实心笔记本：已开启。合盖后仍保持唤醒。";
-"onboard.usage.off" = "线框笔记本：已关闭。合盖后会休眠。";
-"onboard.usage.click" = "左键单击菜单栏图标即可开关。";
-"onboard.usage.menu" = "右键（或按住 Control 单击）打开菜单：登录时启动、本说明、退出。";
+"onboard.usage.title" = "菜单栏";
+"onboard.usage.on" = "开。合盖也不睡。";
+"onboard.usage.off" = "关。合盖就睡。";
+"onboard.usage.click" = "点图标就能开关。";
+"onboard.usage.menu" = "右键是剩下的菜单。";
 
-"onboard.safety.title" = "请记住一件事";
-"onboard.safety.body" = "DontSleep 开启时，合盖不会休眠。放进包里之前请先关闭。";
-"onboard.safety.login" = "登录时启动 DontSleep";
+"onboard.safety.title" = "装包前先关";
+"onboard.safety.body" = "开着合盖，电脑不会睡。";
+"onboard.safety.login" = "登录时打开";

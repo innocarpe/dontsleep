@@ -1,57 +1,51 @@
 "menu.turnOn" = "Turn On";
 "menu.turnOff" = "Turn Off";
-"menu.startAtLogin" = "Start at Login";
-"menu.installHelper" = "Allow Closed-Lid Control…";
+"menu.startAtLogin" = "Open at Login";
+"menu.installHelper" = "Allow Lid Control…";
 "menu.howTo" = "How to Use…";
 "menu.refresh" = "Refresh";
 "menu.quit" = "Quit";
 
-"setup.title" = "One-time setup";
-"setup.message" = "DontSleep needs permission to change closed-lid sleep. macOS will ask for your administrator password once. This only allows two pmset commands, not all of sudo.";
-"setup.continue" = "Continue";
-"setup.later" = "Later";
-"menu.status.on" = "Now: On (stays awake with the lid closed)";
-"menu.status.off" = "Now: Off (sleeps when the lid closes)";
-"menu.status.unknown" = "Now: status unknown";
+"menu.status.on" = "On — lid closed, stays awake";
+"menu.status.off" = "Off — lid closed, sleeps";
+"menu.status.unknown" = "Status unknown";
 
-"tooltip.on" = "DontSleep is on — the Mac stays awake with the lid closed";
-"tooltip.off" = "DontSleep is off — the Mac sleeps when the lid closes";
-"tooltip.unknown" = "DontSleep — could not read status";
+"tooltip.on" = "On. Closed lid stays awake.";
+"tooltip.off" = "Off. Closed lid sleeps.";
+"tooltip.unknown" = "Couldn't read status";
 
-"error.spawn" = "Could not start %@";
-"error.command" = "%@ exited with status %d";
-"error.commandDetail" = "%@ exited with status %d — %@";
-"error.sudoers" = "DontSleep still cannot change closed-lid sleep. Press Enter in the setup window and approve the password prompt.";
-"error.verify" = "pmset did not report the value that was just set.";
+"error.spawn" = "Couldn't start %@";
+"error.command" = "%@ exited %d";
+"error.commandDetail" = "%@ exited %d — %@";
+"error.sudoers" = "No helper yet. Press Enter in the setup window.";
+"error.verify" = "pmset did not take the new value.";
 
-"onboard.progress" = "Step %d of %d";
+"onboard.progress" = "%d / %d";
 "onboard.continue" = "Continue";
 "onboard.back" = "Back";
 "onboard.later" = "Later";
 "onboard.allow" = "Run";
 "onboard.done" = "Done";
 
-"onboard.welcome.title" = "Welcome to DontSleep";
-"onboard.welcome.body1" = "Closing a MacBook lid normally puts the Mac to sleep. DontSleep turns that off when you want the machine to stay awake — on battery or plugged in.";
-"onboard.welcome.body2" = "This is not the same as preventing idle sleep. Tools like caffeinate only keep the Mac awake while the lid is already open.";
+"onboard.welcome.title" = "Closed lid, still awake";
+"onboard.welcome.body1" = "When this is on, closing the lid does not sleep the Mac. Battery or plugged in, same thing.";
+"onboard.welcome.body2" = "caffeinate does not survive a closed lid. This does.";
 
-"onboard.permission.title" = "Allow closed-lid control";
-"onboard.permission.why" = "Closed-lid sleep is a system setting. Run the command below in this window — you do not need Terminal.app.";
-"onboard.permission.what" = "Your account only; pmset -a disablesleep 1 and 0 only. macOS asks for a password once (Touch ID works).";
-"onboard.permission.cmdOn" = "pmset -a disablesleep 1   stay awake with the lid closed";
-"onboard.permission.cmdOff" = "pmset -a disablesleep 0   sleep when the lid closes";
-"onboard.permission.scope" = "Nothing else in sudo is unlocked. Remove later with sudo rm /etc/sudoers.d/dontsleep.";
-"onboard.permission.hint" = "Press Enter to run the command.";
+"onboard.permission.title" = "One password";
+"onboard.permission.why" = "Run the command in this window. macOS will ask for your password.";
+"onboard.permission.what" = "Writes /etc/sudoers.d/dontsleep for this user. Allows only pmset -a disablesleep 1 and 0.";
+"onboard.permission.scope" = "Remove it later: sudo rm /etc/sudoers.d/dontsleep";
+"onboard.permission.hint" = "Press Enter to run.";
 "onboard.permission.copy" = "Copy";
 "onboard.permission.copied" = "Copied";
 "onboard.permission.success" = "wrote /etc/sudoers.d/dontsleep";
 
-"onboard.usage.title" = "How to use it";
-"onboard.usage.on" = "Filled laptop: DontSleep is on. The Mac stays awake with the lid closed.";
-"onboard.usage.off" = "Outline laptop: DontSleep is off. The Mac sleeps when the lid closes.";
-"onboard.usage.click" = "Left-click the menu bar icon to turn it on or off.";
-"onboard.usage.menu" = "Right-click (or Control-click) for the menu: start at login, this guide, or quit.";
+"onboard.usage.title" = "The menu bar";
+"onboard.usage.on" = "On. Lid closed, stays awake.";
+"onboard.usage.off" = "Off. Lid closed, sleeps.";
+"onboard.usage.click" = "Click the icon to switch.";
+"onboard.usage.menu" = "Right-click for the rest.";
 
-"onboard.safety.title" = "One thing to remember";
-"onboard.safety.body" = "While DontSleep is on, closing the lid will not sleep the Mac. Turn it off before you put the computer in a bag.";
-"onboard.safety.login" = "Start DontSleep when I log in";
+"onboard.safety.title" = "Off before the bag";
+"onboard.safety.body" = "If this is on, a closed lid will not sleep the Mac.";
+"onboard.safety.login" = "Open at Login";

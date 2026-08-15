@@ -3,55 +3,49 @@
 "menu.startAtLogin" = "ログイン時に開く";
 "menu.installHelper" = "カバー制御を許可…";
 "menu.howTo" = "使い方…";
-"menu.refresh" = "再読み込み";
+"menu.refresh" = "更新";
 "menu.quit" = "終了";
 
-"setup.title" = "初回だけの設定";
-"setup.message" = "DontSleep がカバーを閉じたスリープを変えるには権限が必要です。macOS が管理者パスワードを一度尋ねます。sudo 全体ではなく、pmset の 2 コマンドだけを許可します。";
-"setup.continue" = "続ける";
-"setup.later" = "あとで";
-"menu.status.on" = "現在: オン（カバーを閉じてもスリープしません）";
-"menu.status.off" = "現在: オフ（カバーを閉じるとスリープします）";
-"menu.status.unknown" = "現在: 状態不明";
+"menu.status.on" = "オン — カバーを閉じてもスリープしない";
+"menu.status.off" = "オフ — カバーを閉じるとスリープする";
+"menu.status.unknown" = "状態不明";
 
-"tooltip.on" = "DontSleep オン — カバーを閉じてもスリープしません";
-"tooltip.off" = "DontSleep オフ — カバーを閉じるとスリープします";
-"tooltip.unknown" = "DontSleep — 状態を読み取れません";
+"tooltip.on" = "オン。カバーを閉じてもスリープしません。";
+"tooltip.off" = "オフ。カバーを閉じるとスリープします。";
+"tooltip.unknown" = "状態を読めません";
 
 "error.spawn" = "%@ を起動できません";
-"error.command" = "%@ がステータス %d で終了しました";
-"error.commandDetail" = "%@ がステータス %d で終了しました — %@";
-"error.sudoers" = "カバーのスリープをまだ変更できません。設定ウィンドウで Enter を押し、パスワードを許可してください。";
-"error.verify" = "設定を変更しましたが、pmset の状態が一致しません。";
+"error.command" = "%@ が %d で終了";
+"error.commandDetail" = "%@ が %d で終了 — %@";
+"error.sudoers" = "まだ権限がありません。設定ウィンドウで Enter を押してください。";
+"error.verify" = "pmset の値が変わりませんでした。";
 
-"onboard.progress" = "%d / %d ステップ";
+"onboard.progress" = "%d / %d";
 "onboard.continue" = "続ける";
 "onboard.back" = "戻る";
 "onboard.later" = "あとで";
 "onboard.allow" = "実行";
 "onboard.done" = "完了";
 
-"onboard.welcome.title" = "DontSleep へようこそ";
-"onboard.welcome.body1" = "MacBook のカバーを閉じると、通常はスリープします。DontSleep はその動作をオフにして、バッテリーでも電源でもカバーを閉じたまま起こしておけます。";
-"onboard.welcome.body2" = "アイドル時のスリープ防止とは違います。caffeinate などはカバーが開いているときだけスリープを止めます。";
+"onboard.welcome.title" = "カバーを閉じてもスリープしない";
+"onboard.welcome.body1" = "オンのあいだはカバーを閉じてもスリープしません。バッテリーでも電源でも同じです。";
+"onboard.welcome.body2" = "caffeinate はカバーを閉じると終わりです。これは違います。";
 
-"onboard.permission.title" = "カバー制御を許可する";
-"onboard.permission.why" = "カバーを閉じたスリープはシステム設定です。下のコマンドをこのウィンドウで実行してください。ターミナルアプリは不要です。";
-"onboard.permission.what" = "今のアカウントだけ、pmset -a disablesleep 1 と 0 だけです。パスワードは一度です（Touch ID 可）。";
-"onboard.permission.cmdOn" = "pmset -a disablesleep 1   カバーを閉じてもスリープしない";
-"onboard.permission.cmdOff" = "pmset -a disablesleep 0   カバーを閉じるとスリープする";
-"onboard.permission.scope" = "sudo の他の権限は開きません。あとで sudo rm /etc/sudoers.d/dontsleep で削除できます。";
-"onboard.permission.hint" = "Enter キーでコマンドを実行します。";
+"onboard.permission.title" = "パスワードは一度";
+"onboard.permission.why" = "このウィンドウでコマンドを実行します。macOS がパスワードを尋ねます。";
+"onboard.permission.what" = "このアカウントで /etc/sudoers.d/dontsleep を書きます。許可するのは pmset -a disablesleep 1 と 0 だけです。";
+"onboard.permission.scope" = "消すとき: sudo rm /etc/sudoers.d/dontsleep";
+"onboard.permission.hint" = "Enter で実行";
 "onboard.permission.copy" = "コピー";
 "onboard.permission.copied" = "コピー済み";
 "onboard.permission.success" = "wrote /etc/sudoers.d/dontsleep";
 
-"onboard.usage.title" = "使い方";
-"onboard.usage.on" = "塗りつぶしたノート: オン。カバーを閉じてもスリープしません。";
-"onboard.usage.off" = "輪郭だけのノート: オフ。カバーを閉じるとスリープします。";
-"onboard.usage.click" = "メニューバーのアイコンを左クリックするとオン/オフできます。";
-"onboard.usage.menu" = "右クリック（または Control-クリック）でメニュー: ログイン時に開く、この案内、終了。";
+"onboard.usage.title" = "メニューバー";
+"onboard.usage.on" = "オン。カバーを閉じてもスリープしません。";
+"onboard.usage.off" = "オフ。カバーを閉じるとスリープします。";
+"onboard.usage.click" = "アイコンをクリックで切り替えます。";
+"onboard.usage.menu" = "右クリックが残りのメニューです。";
 
-"onboard.safety.title" = "ひとつだけ覚えてください";
-"onboard.safety.body" = "DontSleep がオンのあいだは、カバーを閉じてもスリープしません。バッグに入れる前にオフにしてください。";
-"onboard.safety.login" = "ログイン時に DontSleep を開く";
+"onboard.safety.title" = "バッグの前にオフ";
+"onboard.safety.body" = "オンのままカバーを閉じてもスリープしません。";
+"onboard.safety.login" = "ログイン時に開く";

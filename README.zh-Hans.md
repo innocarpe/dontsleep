@@ -6,11 +6,10 @@
 [![macOS](https://img.shields.io/badge/macOS-14%2B-000000?style=flat)](#安装)
 [![Arch](https://img.shields.io/badge/arch-Apple%20silicon-lightgrey?style=flat)](#构建)
 
-**合上盖子后仍保持 Mac 唤醒。**
+**合上盖子也不让 Mac 睡。**
 
-DontSleep 是一个很小的 macOS 菜单栏应用。它切换系统的 `disablesleep`
-标志，使合盖不会让电脑休眠（电源或电池均可）。单击图标即可开关；
-右键打开菜单。
+DontSleep 是 macOS 菜单栏应用。它开关 `disablesleep`，合盖也不会休眠。
+电池或电源都一样。单击切换，右键打开菜单。
 
 <p align="center">
   <img src="docs/assets/app-icon-rounded.png" alt="DontSleep 应用图标：略微打开的 Space Black 笔记本，键盘透出暖光" width="220" />
@@ -34,20 +33,18 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
 - 希望在菜单栏看到当前状态，而不是只在终端里看
 - 不想每次切换都输入密码
 
-它不能替代只阻止空闲休眠的工具。也没有使用 Apple Developer ID 签名
-（见[安装](#安装)）。
+它不是空闲休眠工具。也没有 Apple Developer ID 签名（见[安装](#安装)）。
 
 ## 功能
 
 | 操作 | 结果 |
 | --- | --- |
 | 左键 | 开启 / 关闭 |
-| 右键或 Control-单击 | 菜单：状态、开启、关闭、登录时启动、退出 |
+| 右键 | 菜单 |
 | 实心笔记本图标 | 已开启 — 合盖后仍保持唤醒 |
 | 线框笔记本图标 | 已关闭 — 合盖后休眠 |
 
-菜单栏图标是模板图，会跟随系统菜单栏的深色/浅色。界面跟随 macOS 语言，
-默认为英语，并提供韩语、简体中文和日语。
+菜单栏图标跟随浅色/深色。语言跟随 macOS：英语、韩语、简体中文、日语。
 
 ## 安装
 
@@ -70,7 +67,7 @@ pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-不会开放全部 `sudo`。这一步不需要打开“终端”应用。
+不会开放全部 `sudo`。
 
 若不希望把脚本直接交给 shell，请先阅读 [install.sh](install.sh)。
 若磁盘映像已在本地：`zsh install.sh ~/Downloads/DontSleep-*.dmg`。
@@ -90,10 +87,9 @@ cd dontsleep
 
 ## 使用
 
-首次启动会说明会改什么，在应用内终端运行辅助命令，并介绍菜单栏。
-可在菜单中打开 **使用方法…** 再次查看。
+首次启动就是设置。菜单里的 **怎么用…** 可以再打开。
 
-留在菜单栏即可。放进包里之前请先关闭。**登录时启动** 会写入
+留在菜单栏。装包前先关。**登录时打开** 会写入
 `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`。
 
 开启时合盖也不会休眠。请留意电量。
