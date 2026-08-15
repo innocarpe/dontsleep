@@ -52,23 +52,46 @@ macOS 언어를 따르며, 기본은 영어이고 한국어·중국어 간체·�
 
 ## 설치
 
+릴리즈 디스크 이미지는 **ad-hoc 서명**이고 공증되어 있지 않습니다.
+“확인되지 않은 개발자” 경고가 뜨는 것이 정상입니다.
+
 ### 디스크 이미지
 
-1. `.dmg` 를 열고 **DontSleep** 을 **Applications** 로 끌어다 놓습니다.
-2. **Install Sudoers.command** 를 실행합니다. 계정에만 적용되는
-   `/etc/sudoers.d/dontsleep` 를 만들며, 허용 범위는 다음뿐입니다.
-
-   ```
-   pmset -a disablesleep 1
-   pmset -a disablesleep 0
-   ```
-
+1. [Releases](https://github.com/innocarpe/dontsleep/releases) 에서
+   `DontSleep-*.dmg` 를 받아 엽니다.
+2. **DontSleep** 을 **Applications** 로 끌어다 놓습니다.
+3. **Install Sudoers.command** 를 더블클릭합니다 (아래 설명).
    관리자 비밀번호를 한 번 묻습니다.
-3. **DontSleep** 을 엽니다.
+4. **DontSleep** 을 엽니다. 메뉴바에 노트북 아이콘이 생깁니다.
 
-Gatekeeper 가 첫 실행을 막으면 앱을 Control-클릭한 뒤 **열기** 를 고릅니다.
-이 빌드는 ad-hoc 서명이며 공증되어 있지 않습니다. 본인 맥에는 충분하고,
-남이 받아서 더블클릭만으로 설치하는 경로는 아닙니다.
+앱이나 `.command` 가 막히면:
+
+1. **Control-클릭 → 열기 → 열기.** 기본은 이쪽입니다.
+2. 또는 설정 → 개인정보 보호 및 보안 → **확인 없이 열기**.
+3. 터미널이 편할 때만. 필수는 아닙니다.
+
+   ```sh
+   xattr -d com.apple.quarantine /Applications/DontSleep.app
+   ```
+
+### Install Sudoers.command 가 뭔가
+
+`scripts/install-sudoers.sh` 를 Finder 에서 더블클릭할 수 있게
+`.command` 로 넣은 것입니다. 앱을 설치하지 않고, `sudo` 전체를 열지도
+않습니다.
+
+덮개 닫힘 슬립은 root `pmset` 설정입니다. 이 파일이 없으면 DontSleep은
+켜지지만 **켜기** 가 실패합니다. `sudo -n` (비밀번호 없이) 을 쓰기
+때문입니다. 스크립트는 **지금 계정에만** `/etc/sudoers.d/dontsleep` 를
+쓰며, 허용하는 명령은 다음 두 줄뿐입니다.
+
+```
+pmset -a disablesleep 1
+pmset -a disablesleep 0
+```
+
+설치 후 그 파일을 읽어볼 수 있습니다. 지울 때는
+`sudo rm /etc/sudoers.d/dontsleep`.
 
 ### 소스에서
 
@@ -79,8 +102,7 @@ cd dontsleep
 ./build.sh
 ```
 
-`build.sh` 는 `/Applications/DontSleep.app` 에 설치하고 번들 inode 를
-바꿔서 Launch Services 와 Alfred 가 새 아이콘을 읽게 합니다.
+`build.sh` 는 `/Applications/DontSleep.app` 에 설치합니다.
 
 ## 사용
 

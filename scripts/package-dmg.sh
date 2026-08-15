@@ -21,15 +21,22 @@ DontSleep
 
 1. Drag DontSleep.app onto Applications.
 2. Double-click Install Sudoers.command.
-   This writes /etc/sudoers.d/dontsleep so two exact pmset
-   invocations can run without a password. You will be asked
-   for an administrator password once.
-3. Open DontSleep.app. A laptop icon appears in the menu bar.
-   Left-click toggles. Right-click (or Control-click) opens the menu.
+   That is scripts/install-sudoers.sh. It does not install the app.
+   It writes /etc/sudoers.d/dontsleep so only these two commands
+   can run without a password:
 
-Gatekeeper may block the first launch. Control-click the app and choose Open.
+     pmset -a disablesleep 1
+     pmset -a disablesleep 0
 
-The Mac stays awake with the lid closed while DontSleep is on. Watch the battery.
+   You will be asked for an administrator password once.
+3. Open DontSleep.app. Left-click toggles. Right-click opens the menu.
+
+The build is not notarized. If macOS blocks the app or the .command file:
+Control-click → Open → Open.
+Or System Settings → Privacy & Security → Open Anyway.
+xattr -d com.apple.quarantine is optional, not the default path.
+
+While DontSleep is on, a closed lid will not sleep the Mac. Watch the battery.
 TXT
 
 /bin/rm -f "$out"

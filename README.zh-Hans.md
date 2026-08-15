@@ -51,23 +51,44 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
 
 ## 安装
 
+发布的磁盘映像是 **ad-hoc 签名**，未经公证。系统提示“无法验证开发者”
+是预期行为。
+
 ### 磁盘映像
 
-1. 打开 `.dmg`，将 **DontSleep** 拖到 **Applications**。
-2. 运行 **Install Sudoers.command**。它只会为当前账户写入
-   `/etc/sudoers.d/dontsleep`，范围仅限：
+1. 从 [Releases](https://github.com/innocarpe/dontsleep/releases) 下载
+   `DontSleep-*.dmg` 并打开。
+2. 将 **DontSleep** 拖到 **Applications**。
+3. 双击 **Install Sudoers.command**（见下文）。会询问一次管理员密码。
+4. 打开 **DontSleep**。菜单栏会出现笔记本图标。
 
+若 macOS 拒绝打开应用或 `.command` 文件：
+
+1. **按住 Control 单击 → 打开 → 打开。** 请先用这一步。
+2. 或：系统设置 → 隐私与安全性 → **仍要打开**。
+3. 仅在你本来就用终端时。不是必须步骤：
+
+   ```sh
+   xattr -d com.apple.quarantine /Applications/DontSleep.app
    ```
-   pmset -a disablesleep 1
-   pmset -a disablesleep 0
-   ```
 
-   会询问一次管理员密码。
-3. 打开 **DontSleep**。
+### Install Sudoers.command 是什么
 
-若 Gatekeeper 阻止首次启动，请 Control-单击应用并选择**打开**。该构建为
-ad-hoc 签名，未经公证。对自己的电脑足够；对陌生人来说，不是“下载后
-双击即可安装”的路径。
+它就是 `scripts/install-sudoers.sh`，加上 `.command` 后缀，以便在
+Finder 里双击后在终端运行。它**不会**安装应用，也**不会**放开全部
+`sudo`。
+
+合盖休眠是需要 root 的 `pmset` 设置。没有这个文件时 DontSleep 能打开，
+但**开启**会失败，因为它使用 `sudo -n`（不弹出密码）。脚本只为
+**当前账户** 写入 `/etc/sudoers.d/dontsleep`，且只允许这两条：
+
+```
+pmset -a disablesleep 1
+pmset -a disablesleep 0
+```
+
+安装后可以打开该文件查看。要删除：
+`sudo rm /etc/sudoers.d/dontsleep`。
 
 ### 从源码
 
@@ -78,8 +99,7 @@ cd dontsleep
 ./build.sh
 ```
 
-`build.sh` 会安装到 `/Applications/DontSleep.app`，并替换 bundle inode，
-以便 Launch Services 和 Alfred 读取新图标。
+`build.sh` 会安装到 `/Applications/DontSleep.app`。
 
 ## 使用
 

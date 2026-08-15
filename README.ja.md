@@ -53,24 +53,46 @@ ID では署名されていません（[インストール](#インストール)
 
 ## インストール
 
+リリースのディスクイメージは **ad-hoc 署名**で、公証されていません。
+「開発元を確認できない」と出るのが普通です。
+
 ### ディスクイメージから
 
-1. `.dmg` を開き、**DontSleep** を **Applications** にドラッグします。
-2. **Install Sudoers.command** を実行します。自分のアカウントだけに
-   `/etc/sudoers.d/dontsleep` を書き、許可するのは次だけです。
-
-   ```
-   pmset -a disablesleep 1
-   pmset -a disablesleep 0
-   ```
-
+1. [Releases](https://github.com/innocarpe/dontsleep/releases) から
+   `DontSleep-*.dmg` を入手して開きます。
+2. **DontSleep** を **Applications** にドラッグします。
+3. **Install Sudoers.command** をダブルクリックします（後述）。
    管理者パスワードを一度聞かれます。
-3. **DontSleep** を開きます。
+4. **DontSleep** を開きます。メニューバーにノートのアイコンが出ます。
 
-Gatekeeper が初回起動を止めたら、アプリを Control-クリックして
-**開く** を選びます。このビルドは ad-hoc 署名で公証されていません。
-自分の Mac には十分ですが、他人がダウンロードしてダブルクリックする
-だけの導入には向きません。
+アプリや `.command` が止まったとき:
+
+1. **Control-クリック → 開く → 開く。** まずこちらです。
+2. または システム設定 → プライバシーとセキュリティ → **このまま開く**。
+3. ターミナルを普段使う人だけ。必須ではありません。
+
+   ```sh
+   xattr -d com.apple.quarantine /Applications/DontSleep.app
+   ```
+
+### Install Sudoers.command とは
+
+`scripts/install-sudoers.sh` に `.command` を付けて、Finder で
+ダブルクリックすると Terminal が走るようにしたものです。アプリの
+インストールではなく、`sudo` 全体を開けるものでもありません。
+
+カバーを閉じたスリープは root の `pmset` です。このファイルがないと
+DontSleep は起動しますが、**オン** は失敗します。`sudo -n`
+（パスワードなし）を使うためです。スクリプトは **今のアカウントだけ** に
+`/etc/sudoers.d/dontsleep` を書き、次の 2 行だけを許可します。
+
+```
+pmset -a disablesleep 1
+pmset -a disablesleep 0
+```
+
+入れたあと、そのファイルを読めます。消すときは
+`sudo rm /etc/sudoers.d/dontsleep`。
 
 ### ソースから
 
@@ -81,8 +103,7 @@ cd dontsleep
 ./build.sh
 ```
 
-`build.sh` は `/Applications/DontSleep.app` に入れ、バンドルの inode を
-入れ替えて Launch Services と Alfred が新しいアイコンを読むようにします。
+`build.sh` は `/Applications/DontSleep.app` に入れます。
 
 ## 使い方
 

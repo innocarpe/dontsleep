@@ -53,24 +53,46 @@ Korean, Simplified Chinese, and Japanese.
 
 ## Install
 
+The release disk image is **ad-hoc signed, not notarized**. macOS will warn
+that the developer cannot be verified. That is expected.
+
 ### From the disk image
 
-1. Open the `.dmg` and drag **DontSleep** onto **Applications**.
-2. Run **Install Sudoers.command**. It writes `/etc/sudoers.d/dontsleep`
-   for your account only, limited to:
+1. Download `DontSleep-*.dmg` from
+   [Releases](https://github.com/innocarpe/dontsleep/releases) and open it.
+2. Drag **DontSleep** onto **Applications**.
+3. Double-click **Install Sudoers.command** (see below). An administrator
+   password is asked once.
+4. Open **DontSleep**. A laptop icon appears in the menu bar.
 
+If macOS refuses to open the app or the `.command` file:
+
+1. **Control-click → Open → Open.** This is the usual path.
+2. Or System Settings → Privacy & Security → **Open Anyway**.
+3. Terminal, only if you already use it — not required:
+
+   ```sh
+   xattr -d com.apple.quarantine /Applications/DontSleep.app
    ```
-   pmset -a disablesleep 1
-   pmset -a disablesleep 0
-   ```
 
-   You will be asked for an administrator password once.
-3. Open **DontSleep**.
+### What Install Sudoers.command is
 
-If Gatekeeper blocks the first launch, Control-click the app and choose
-**Open**. The build is ad-hoc signed, not notarized. That is enough for a
-machine you own. It is not a smooth “download and double-click” path for
-strangers.
+It is `scripts/install-sudoers.sh` with a `.command` suffix so a double-click
+in Finder runs it in Terminal. It does **not** install the app and does **not**
+unlock all of `sudo`.
+
+Closed-lid sleep is a root `pmset` setting. Without this file, DontSleep
+opens but **Turn On** fails because it calls `sudo -n` (no password prompt).
+The script writes `/etc/sudoers.d/dontsleep` for **your account only**,
+limited to these two command lines:
+
+```
+pmset -a disablesleep 1
+pmset -a disablesleep 0
+```
+
+You can read that file after install. To remove it later:
+`sudo rm /etc/sudoers.d/dontsleep`.
 
 ### From source
 
@@ -81,8 +103,7 @@ cd dontsleep
 ./build.sh
 ```
 
-`build.sh` installs to `/Applications/DontSleep.app` and replaces the bundle
-inode so Launch Services and Alfred pick up a new icon.
+`build.sh` installs to `/Applications/DontSleep.app`.
 
 ## Usage
 
