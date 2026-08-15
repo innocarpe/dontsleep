@@ -60,39 +60,29 @@ ID では署名されていません（[インストール](#インストール)
 
 1. [Releases](https://github.com/innocarpe/dontsleep/releases) から
    `DontSleep-*.dmg` を入手して開きます。
-2. **DontSleep** を **Applications** にドラッグします。
-3. **Install Sudoers.command** をダブルクリックします（後述）。
-   管理者パスワードを一度聞かれます。
-4. **DontSleep** を開きます。メニューバーにノートのアイコンが出ます。
+2. **Install DontSleep.pkg** をダブルクリックし、Mac のパスワードを
+   入力します。アプリを Applications に入れ、`pmset` 2 行をパスワード
+   なしで許可し、ログイン時に DontSleep を開きます。
+3. メニューバーにノートのアイコンが出ます。
 
-アプリや `.command` が止まったとき:
+パッケージが止まったとき:
 
 1. **Control-クリック → 開く → 開く。** まずこちらです。
 2. または システム設定 → プライバシーとセキュリティ → **このまま開く**。
-3. ターミナルを普段使う人だけ。必須ではありません。
 
-   ```sh
-   xattr -d com.apple.quarantine /Applications/DontSleep.app
-   ```
-
-### Install Sudoers.command とは
-
-`scripts/install-sudoers.sh` に `.command` を付けて、Finder で
-ダブルクリックすると Terminal が走るようにしたものです。アプリの
-インストールではなく、`sudo` 全体を開けるものでもありません。
-
-カバーを閉じたスリープは root の `pmset` です。このファイルがないと
-DontSleep は起動しますが、**オン** は失敗します。`sudo -n`
-（パスワードなし）を使うためです。スクリプトは **今のアカウントだけ** に
-`/etc/sudoers.d/dontsleep` を書き、次の 2 行だけを許可します。
+この警告は Gatekeeper です（公証されていないビルド）。インストーラが
+聞くパスワードは別で、**今のアカウントだけ** に
+`/etc/sudoers.d/dontsleep` を書き、次だけを許可します。
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-入れたあと、そのファイルを読めます。消すときは
-`sudo rm /etc/sudoers.d/dontsleep`。
+sudo 全体は開きません。パッケージを使わずアプリだけコピーした場合は、
+初回起動時に DontSleep がそのパスワードを自分で尋ねます。
+
+消すとき: `sudo rm /etc/sudoers.d/dontsleep`。
 
 ### ソースから
 

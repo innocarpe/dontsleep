@@ -60,39 +60,29 @@ that the developer cannot be verified. That is expected.
 
 1. Download `DontSleep-*.dmg` from
    [Releases](https://github.com/innocarpe/dontsleep/releases) and open it.
-2. Drag **DontSleep** onto **Applications**.
-3. Double-click **Install Sudoers.command** (see below). An administrator
-   password is asked once.
-4. Open **DontSleep**. A laptop icon appears in the menu bar.
+2. Double-click **Install DontSleep.pkg** and enter your Mac password.
+   The installer copies the app to Applications, allows two `pmset` lines
+   without a password, and starts DontSleep at login.
+3. A laptop icon appears in the menu bar.
 
-If macOS refuses to open the app or the `.command` file:
+If macOS refuses to open the package:
 
 1. **Control-click → Open → Open.** This is the usual path.
 2. Or System Settings → Privacy & Security → **Open Anyway**.
-3. Terminal, only if you already use it — not required:
 
-   ```sh
-   xattr -d com.apple.quarantine /Applications/DontSleep.app
-   ```
-
-### What Install Sudoers.command is
-
-It is `scripts/install-sudoers.sh` with a `.command` suffix so a double-click
-in Finder runs it in Terminal. It does **not** install the app and does **not**
-unlock all of `sudo`.
-
-Closed-lid sleep is a root `pmset` setting. Without this file, DontSleep
-opens but **Turn On** fails because it calls `sudo -n` (no password prompt).
-The script writes `/etc/sudoers.d/dontsleep` for **your account only**,
-limited to these two command lines:
+That warning is Gatekeeper (the build is not notarized). The installer
+password is different: it is the one-time administrator prompt that writes
+`/etc/sudoers.d/dontsleep` for **your account only**, limited to:
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-You can read that file after install. To remove it later:
-`sudo rm /etc/sudoers.d/dontsleep`.
+It does not unlock all of `sudo`. If you skip the package and only copy the
+app, DontSleep will ask for that password itself on first launch.
+
+To remove the helper later: `sudo rm /etc/sudoers.d/dontsleep`.
 
 ### From source
 

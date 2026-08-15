@@ -59,39 +59,29 @@ macOS 언어를 따르며, 기본은 영어이고 한국어·중국어 간체·�
 
 1. [Releases](https://github.com/innocarpe/dontsleep/releases) 에서
    `DontSleep-*.dmg` 를 받아 엽니다.
-2. **DontSleep** 을 **Applications** 로 끌어다 놓습니다.
-3. **Install Sudoers.command** 를 더블클릭합니다 (아래 설명).
-   관리자 비밀번호를 한 번 묻습니다.
-4. **DontSleep** 을 엽니다. 메뉴바에 노트북 아이콘이 생깁니다.
+2. **Install DontSleep.pkg** 를 더블클릭하고 맥 비밀번호를 입력합니다.
+   앱을 Applications에 넣고, `pmset` 두 줄을 비밀번호 없이 허용하고,
+   로그인 시 DontSleep을 시작합니다.
+3. 메뉴바에 노트북 아이콘이 생깁니다.
 
-앱이나 `.command` 가 막히면:
+패키지가 막히면:
 
 1. **Control-클릭 → 열기 → 열기.** 기본은 이쪽입니다.
 2. 또는 설정 → 개인정보 보호 및 보안 → **확인 없이 열기**.
-3. 터미널이 편할 때만. 필수는 아닙니다.
 
-   ```sh
-   xattr -d com.apple.quarantine /Applications/DontSleep.app
-   ```
-
-### Install Sudoers.command 가 뭔가
-
-`scripts/install-sudoers.sh` 를 Finder 에서 더블클릭할 수 있게
-`.command` 로 넣은 것입니다. 앱을 설치하지 않고, `sudo` 전체를 열지도
-않습니다.
-
-덮개 닫힘 슬립은 root `pmset` 설정입니다. 이 파일이 없으면 DontSleep은
-켜지지만 **켜기** 가 실패합니다. `sudo -n` (비밀번호 없이) 을 쓰기
-때문입니다. 스크립트는 **지금 계정에만** `/etc/sudoers.d/dontsleep` 를
-쓰며, 허용하는 명령은 다음 두 줄뿐입니다.
+이 경고는 Gatekeeper입니다 (공증되지 않은 빌드). 설치 프로그램이 묻는
+비밀번호는 다른 것입니다. **지금 계정에만** `/etc/sudoers.d/dontsleep` 를
+쓰며, 허용하는 명령은 다음뿐입니다.
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-설치 후 그 파일을 읽어볼 수 있습니다. 지울 때는
-`sudo rm /etc/sudoers.d/dontsleep`.
+`sudo` 전체를 열지 않습니다. 패키지 없이 앱만 복사하면, 첫 실행 때
+DontSleep이 그 비밀번호를 직접 묻습니다.
+
+지울 때: `sudo rm /etc/sudoers.d/dontsleep`.
 
 ### 소스에서
 

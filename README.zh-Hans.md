@@ -58,37 +58,28 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
 
 1. 从 [Releases](https://github.com/innocarpe/dontsleep/releases) 下载
    `DontSleep-*.dmg` 并打开。
-2. 将 **DontSleep** 拖到 **Applications**。
-3. 双击 **Install Sudoers.command**（见下文）。会询问一次管理员密码。
-4. 打开 **DontSleep**。菜单栏会出现笔记本图标。
+2. 双击 **Install DontSleep.pkg** 并输入 Mac 密码。
+   安装程序会把应用放到 Applications、允许两条 `pmset` 命令免密，
+   并在登录时启动 DontSleep。
+3. 菜单栏会出现笔记本图标。
 
-若 macOS 拒绝打开应用或 `.command` 文件：
+若 macOS 拒绝打开安装包：
 
 1. **按住 Control 单击 → 打开 → 打开。** 请先用这一步。
 2. 或：系统设置 → 隐私与安全性 → **仍要打开**。
-3. 仅在你本来就用终端时。不是必须步骤：
 
-   ```sh
-   xattr -d com.apple.quarantine /Applications/DontSleep.app
-   ```
-
-### Install Sudoers.command 是什么
-
-它就是 `scripts/install-sudoers.sh`，加上 `.command` 后缀，以便在
-Finder 里双击后在终端运行。它**不会**安装应用，也**不会**放开全部
-`sudo`。
-
-合盖休眠是需要 root 的 `pmset` 设置。没有这个文件时 DontSleep 能打开，
-但**开启**会失败，因为它使用 `sudo -n`（不弹出密码）。脚本只为
-**当前账户** 写入 `/etc/sudoers.d/dontsleep`，且只允许这两条：
+该警告来自 Gatekeeper（构建未经公证）。安装程序要的密码是另一回事：
+只为**当前账户** 写入 `/etc/sudoers.d/dontsleep`，且只允许：
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-安装后可以打开该文件查看。要删除：
-`sudo rm /etc/sudoers.d/dontsleep`。
+不会开放全部 `sudo`。若只拷贝应用而不用安装包，DontSleep 会在首次启动时
+自己询问该密码。
+
+要删除：`sudo rm /etc/sudoers.d/dontsleep`。
 
 ### 从源码
 
