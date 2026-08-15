@@ -2,6 +2,7 @@
 "menu.turnOff" = "Turn Off";
 "menu.startAtLogin" = "Start at Login";
 "menu.installHelper" = "Allow Closed-Lid Control…";
+"menu.howTo" = "How to Use…";
 "menu.refresh" = "Refresh";
 "menu.quit" = "Quit";
 
@@ -22,3 +23,31 @@
 "error.commandDetail" = "%@ exited with status %d — %@";
 "error.sudoers" = "DontSleep still cannot change closed-lid sleep. Enter the administrator password when asked, or run the installer again.";
 "error.verify" = "pmset did not report the value that was just set.";
+
+"onboard.progress" = "Step %d of %d";
+"onboard.continue" = "Continue";
+"onboard.back" = "Back";
+"onboard.later" = "Later";
+"onboard.allow" = "Enter password…";
+"onboard.done" = "Done";
+
+"onboard.welcome.title" = "Welcome to DontSleep";
+"onboard.welcome.body1" = "Closing a MacBook lid normally puts the Mac to sleep. DontSleep turns that off when you want the machine to stay awake — on battery or plugged in.";
+"onboard.welcome.body2" = "This is not the same as preventing idle sleep. Tools like caffeinate only keep the Mac awake while the lid is already open.";
+
+"onboard.permission.title" = "Allow closed-lid control";
+"onboard.permission.why" = "macOS treats closed-lid sleep as a system setting. Changing it requires an administrator password, once.";
+"onboard.permission.what" = "DontSleep will add a rule for your user account only. The rule allows exactly these two commands:";
+"onboard.permission.cmdOn" = "pmset -a disablesleep 1   stay awake with the lid closed";
+"onboard.permission.cmdOff" = "pmset -a disablesleep 0   sleep when the lid closes";
+"onboard.permission.scope" = "Nothing else in sudo is unlocked. You can remove the rule later with sudo rm /etc/sudoers.d/dontsleep.";
+
+"onboard.usage.title" = "How to use it";
+"onboard.usage.on" = "Filled laptop: DontSleep is on. The Mac stays awake with the lid closed.";
+"onboard.usage.off" = "Outline laptop: DontSleep is off. The Mac sleeps when the lid closes.";
+"onboard.usage.click" = "Left-click the menu bar icon to turn it on or off.";
+"onboard.usage.menu" = "Right-click (or Control-click) for the menu: start at login, this guide, or quit.";
+
+"onboard.safety.title" = "One thing to remember";
+"onboard.safety.body" = "While DontSleep is on, closing the lid will not sleep the Mac. Turn it off before you put the computer in a bag.";
+"onboard.safety.login" = "Start DontSleep when I log in";

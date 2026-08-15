@@ -24,6 +24,8 @@ swiftc -O \
   -target arm64-apple-macos14.0 \
   -sdk "$sdk" \
   -framework AppKit \
+  -framework SwiftUI \
+  -framework Combine \
   -o "${macos}/DontSleep" \
   "${root}"/Sources/*.swift
 

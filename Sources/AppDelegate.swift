@@ -14,6 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var didRender = false
     private var poppingMenu = false
     private var helperReady = false
+    private var onboarding = OnboardingController()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let others = NSRunningApplication.runningApplications(withBundleIdentifier: AppIdentity.bundleID)
@@ -55,6 +56,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(loginMenuItem)
         setupItem = item(L10n.string("menu.installHelper"), action: #selector(installHelper), key: "")
         menu.addItem(setupItem)
+        menu.addItem(item(L10n.string("menu.howTo"), action: #selector(showHowTo), key: "?"))
         menu.addItem(item(L10n.string("menu.refresh"), action: #selector(refreshMenu), key: "r"))
         menu.addItem(.separator())
         menu.addItem(item(L10n.string("menu.quit"), action: #selector(quit), key: "q"))
@@ -66,7 +68,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         timer?.tolerance = 2
 
         DispatchQueue.main.async { [weak self] in
-            self?.ensureHelper()
+            self?.startFirstRun()
         }
     }
 
@@ -104,45 +106,35 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         LoginItem.setEnabled(!LoginItem.isEnabled)
         loginMenuItem.state = LoginItem.isEnabled ? .on : .off
     }
-    @objc private func installHelper() { promptForHelper(force: true) }
+    @objc private func installHelper() { presentOnboarding(kind: .permission) }
+    @objc private func showHowTo() { presentOnboarding(kind: .howTo) }
     @objc private func quit() { NSApp.terminate(nil) }
 
-    private func ensureHelper() {
+    private func startFirstRun() {
         helperReady = Power.hasPasswordlessAccess()
         setupItem.isHidden = helperReady
-        if !helperReady {
-            promptForHelper(force: false)
+        onboarding.onFinish = { [weak self] in
+            guard let self else { return }
+            self.helperReady = Power.hasPasswordlessAccess()
+            self.didRender = false
+            self.refresh()
+        }
+        if !OnboardingController.isCompleted {
+            presentOnboarding(kind: .firstLaunch)
+        } else if !helperReady {
+            presentOnboarding(kind: .permission)
         }
     }
 
-    private func promptForHelper(force: Bool) {
-        if !force && Power.hasPasswordlessAccess() { return }
-        let alert = NSAlert()
-        alert.alertStyle = .informational
-        alert.messageText = L10n.string("setup.title")
-        alert.informativeText = L10n.string("setup.message")
-        alert.addButton(withTitle: L10n.string("setup.continue"))
-        alert.addButton(withTitle: L10n.string("setup.later"))
-        NSApp.activate(ignoringOtherApps: true)
-        guard alert.runModal() == .alertFirstButtonReturn else { return }
-        do {
-            try Sudoers.install()
-            helperReady = true
-            if !LoginItem.isEnabled {
-                LoginItem.setEnabled(true)
-            }
-        } catch {
-            helperReady = false
-            present(error)
-        }
-        didRender = false
-        refresh()
+    private func presentOnboarding(kind: OnboardingModel.Kind) {
+        helperReady = Power.hasPasswordlessAccess()
+        onboarding.present(kind: kind, needsHelper: !helperReady)
     }
 
     private func apply(disabled: Bool) {
         if !helperReady {
-            promptForHelper(force: true)
-            if !helperReady { return }
+            presentOnboarding(kind: .permission)
+            return
         }
         do {
             try Power.setSleepDisabled(disabled)
