@@ -1,0 +1,18 @@
+"menu.turnOn" = "Turn On";
+"menu.turnOff" = "Turn Off";
+"menu.startAtLogin" = "Start at Login";
+"menu.refresh" = "Refresh";
+"menu.quit" = "Quit";
+"menu.status.on" = "Now: On (stays awake with the lid closed)";
+"menu.status.off" = "Now: Off (sleeps when the lid closes)";
+"menu.status.unknown" = "Now: status unknown";
+
+"tooltip.on" = "DontSleep is on — the Mac stays awake with the lid closed";
+"tooltip.off" = "DontSleep is off — the Mac sleeps when the lid closes";
+"tooltip.unknown" = "DontSleep — could not read status";
+
+"error.spawn" = "Could not start %@";
+"error.command" = "%@ exited with status %d";
+"error.commandDetail" = "%@ exited with status %d — %@";
+"error.sudoers" = "Cannot run pmset without a password. Install /etc/sudoers.d/dontsleep first.";
+"error.verify" = "pmset did not report the value that was just set.";
