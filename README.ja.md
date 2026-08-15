@@ -58,30 +58,34 @@ ID では署名されていません（[インストール](#インストール)
 
 ### ディスクイメージから
 
+いまの macOS（Tahoe）では、ダウンロードしたビルドを開くと
+**ゴミ箱に入れる** しか出ません。開くボタンはありません。
+ダブルクリックも Control-クリックもダメです。公証されていない
+ad-hoc ビルドでは、GUI はそれだけです。
+
 1. [Releases](https://github.com/innocarpe/dontsleep/releases) から
-   `DontSleep-*.dmg` を入手して開きます。
-2. **Install DontSleep.pkg** をダブルクリックし、Mac のパスワードを
-   入力します。アプリを Applications に入れ、`pmset` 2 行をパスワード
-   なしで許可し、ログイン時に DontSleep を開きます。
-3. メニューバーにノートのアイコンが出ます。
-
-macOS Tahoe では Control-クリック → 開くが **効かないことが多い**です。
-次の順で開いてください。
-
-1. パッケージを一度ダブルクリックして、ブロックを記録させます。
-2. システム設定 → プライバシーとセキュリティ → 下へスクロール →
-   **このまま開く** → 開く。
-3. **このまま開く** が出ないときは、ターミナルで隔離を外してから
-   ディスクイメージを開き直します。
+   `DontSleep-*.dmg` を入手します。
+2. ターミナルで:
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
 
-この警告は Gatekeeper です（公証されていないビルド）。インストーラが
-聞くパスワードは別で、**今のアカウントだけ** に
-`/etc/sudoers.d/dontsleep` を書き、次だけを許可します。
+   すでに Applications にある場合:
+
+   ```sh
+   xattr -dr com.apple.quarantine /Applications/DontSleep.app
+   open /Applications/DontSleep.app
+   ```
+3. **Install DontSleep.pkg** をダブルクリックし、Mac のパスワードを
+   入力します。アプリのコピー、`pmset` 2 行の許可、ログイン時起動まで
+   行います。
+4. メニューバーにノートのアイコンが出ます。
+
+インストーラのパスワードは Gatekeeper とは別です。
+**今のアカウントだけ** に `/etc/sudoers.d/dontsleep` を書き、次だけを
+許可します。
 
 ```
 pmset -a disablesleep 1

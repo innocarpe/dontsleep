@@ -58,29 +58,32 @@ that the developer cannot be verified. That is expected.
 
 ### From the disk image
 
+On current macOS (Tahoe), opening a downloaded build shows **Move to
+Trash** only. There is no Open button. Double-click and Control-click
+both fail. Apple has not notarized this ad-hoc build, so that dialog is
+the whole GUI.
+
 1. Download `DontSleep-*.dmg` from
-   [Releases](https://github.com/innocarpe/dontsleep/releases) and open it.
-2. Double-click **Install DontSleep.pkg** and enter your Mac password.
-   The installer copies the app to Applications, allows two `pmset` lines
-   without a password, and starts DontSleep at login.
-3. A laptop icon appears in the menu bar.
-
-On macOS Tahoe, Control-click → Open often does **not** work. Do this
-instead:
-
-1. Double-click the package once so macOS records the block.
-2. System Settings → Privacy & Security → scroll to Security →
-   **Open Anyway** → Open.
-3. If **Open Anyway** never appears, remove the download quarantine in
-   Terminal, then open the disk image again:
+   [Releases](https://github.com/innocarpe/dontsleep/releases).
+2. In Terminal:
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
 
-That warning is Gatekeeper (the build is not notarized). The installer
-password is different: it is the one-time administrator prompt that writes
+   If the app is already in Applications:
+
+   ```sh
+   xattr -dr com.apple.quarantine /Applications/DontSleep.app
+   open /Applications/DontSleep.app
+   ```
+3. Double-click **Install DontSleep.pkg** and enter your Mac password.
+   The installer copies the app, allows two `pmset` lines without a
+   password, and starts DontSleep at login.
+4. A laptop icon appears in the menu bar.
+
+The installer password is a different prompt from Gatekeeper. It writes
 `/etc/sudoers.d/dontsleep` for **your account only**, limited to:
 
 ```

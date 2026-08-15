@@ -57,30 +57,32 @@ macOS 언어를 따르며, 기본은 영어이고 한국어·중국어 간체·�
 
 ### 디스크 이미지
 
+지금 macOS(Tahoe)에서 받은 빌드를 열면 **휴지통으로 이동**만 나옵니다.
+열기 버튼이 없습니다. 더블클릭과 Control-클릭은 둘 다 안 됩니다.
+Apple이 이 ad-hoc 빌드를 공증하지 않아서, GUI로는 그게 전부입니다.
+
 1. [Releases](https://github.com/innocarpe/dontsleep/releases) 에서
-   `DontSleep-*.dmg` 를 받아 엽니다.
-2. **Install DontSleep.pkg** 를 더블클릭하고 맥 비밀번호를 입력합니다.
-   앱을 Applications에 넣고, `pmset` 두 줄을 비밀번호 없이 허용하고,
-   로그인 시 DontSleep을 시작합니다.
-3. 메뉴바에 노트북 아이콘이 생깁니다.
-
-macOS Tahoe에서는 Control-클릭 → 열기가 **안 되는 경우가 많습니다.**
-이렇게 하세요.
-
-1. 패키지를 한 번 더블클릭해서 차단을 기록하게 합니다.
-2. 시스템 설정 → 개인정보 보호 및 보안 → 아래로 스크롤 →
-   **확인 없이 열기** → 열기.
-3. **확인 없이 열기** 가 안 보이면 터미널에서 다운로드 격리를 지운 뒤
-   디스크 이미지를 다시 엽니다.
+   `DontSleep-*.dmg` 를 받습니다.
+2. 터미널에서:
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
 
-이 경고는 Gatekeeper입니다 (공증되지 않은 빌드). 설치 프로그램이 묻는
-비밀번호는 다른 것입니다. **지금 계정에만** `/etc/sudoers.d/dontsleep` 를
-쓰며, 허용하는 명령은 다음뿐입니다.
+   이미 Applications에 앱이 있다면:
+
+   ```sh
+   xattr -dr com.apple.quarantine /Applications/DontSleep.app
+   open /Applications/DontSleep.app
+   ```
+3. **Install DontSleep.pkg** 를 더블클릭하고 맥 비밀번호를 입력합니다.
+   앱 복사, `pmset` 두 줄 허용, 로그인 시 시작까지 합니다.
+4. 메뉴바에 노트북 아이콘이 생깁니다.
+
+설치 프로그램이 묻는 비밀번호는 Gatekeeper와 다른 것입니다.
+**지금 계정에만** `/etc/sudoers.d/dontsleep` 를 쓰며, 허용하는 명령은
+다음뿐입니다.
 
 ```
 pmset -a disablesleep 1

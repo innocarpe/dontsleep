@@ -56,27 +56,31 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
 
 ### 磁盘映像
 
+在当前 macOS（Tahoe）上，下载的构建只会弹出 **移到废纸篓**。
+没有“打开”。双击和按住 Control 单击都无效。这是未经公证的
+ad-hoc 构建的正常结果。
+
 1. 从 [Releases](https://github.com/innocarpe/dontsleep/releases) 下载
-   `DontSleep-*.dmg` 并打开。
-2. 双击 **Install DontSleep.pkg** 并输入 Mac 密码。
-   安装程序会把应用放到 Applications、允许两条 `pmset` 命令免密，
-   并在登录时启动 DontSleep。
-3. 菜单栏会出现笔记本图标。
-
-在 macOS Tahoe 上，按住 Control 单击 → 打开 **经常无效**。请按下面做：
-
-1. 先双击一次安装包，让系统记下这次拦截。
-2. 系统设置 → 隐私与安全性 → 滚到安全性 →
-   **仍要打开** → 打开。
-3. 如果始终没有 **仍要打开**，在终端去掉下载隔离后再打开磁盘映像：
+   `DontSleep-*.dmg`。
+2. 在终端执行：
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
 
-该警告来自 Gatekeeper（构建未经公证）。安装程序要的密码是另一回事：
-只为**当前账户** 写入 `/etc/sudoers.d/dontsleep`，且只允许：
+   若应用已在 Applications：
+
+   ```sh
+   xattr -dr com.apple.quarantine /Applications/DontSleep.app
+   open /Applications/DontSleep.app
+   ```
+3. 双击 **Install DontSleep.pkg** 并输入 Mac 密码。
+   会复制应用、允许两条 `pmset`、并在登录时启动。
+4. 菜单栏会出现笔记本图标。
+
+安装程序的密码与 Gatekeeper 不是一回事。它只为**当前账户** 写入
+`/etc/sudoers.d/dontsleep`，且只允许：
 
 ```
 pmset -a disablesleep 1

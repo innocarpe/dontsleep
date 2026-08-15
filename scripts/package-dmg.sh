@@ -37,15 +37,13 @@ DontSleep
 2. Enter your Mac password when the installer asks.
    That copies the app to Applications, allows two pmset
    commands without a password, and starts DontSleep at login.
-3. On macOS Tahoe, Control-click → Open often does nothing.
-   Double-click the package once, then:
-   System Settings → Privacy & Security → Open Anyway.
-   If Open Anyway never appears:
+3. On Tahoe the only dialog is Move to Trash. Double-click and
+   Control-click both fail. Before opening the image:
 
      xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
      open ~/Downloads/DontSleep-*.dmg
 
-This build is not notarized. That warning is expected.
+This build is not notarized. That dialog is expected.
 
 While DontSleep is on, a closed lid will not sleep the Mac. Watch the battery.
 TXT
