@@ -52,43 +52,30 @@ macOS 언어를 따르며, 기본은 영어이고 한국어·중국어 간체·�
 
 ## 설치
 
-릴리즈 디스크 이미지는 **ad-hoc 서명**이고 공증되어 있지 않습니다.
-“확인되지 않은 개발자” 경고가 뜨는 것이 정상입니다.
+릴리즈는 **ad-hoc 서명**이고 공증되어 있지 않습니다. 지금 macOS(Tahoe)에서
+받은 앱을 Finder로 열면 **휴지통으로 이동**만 나옵니다. Gatekeeper는
+실행하는 앱을 보므로, 디스크 이미지에서 quarantine을 지워도 소용이
+없습니다. 앱을 받아서 더블클릭하지 마세요.
 
-### 디스크 이미지
+다음 한 줄이 앱을 복사하고, 그 복사본의 quarantine을 지우고, helper를
+쓴 뒤 DontSleep을 엽니다.
 
-지금 macOS(Tahoe)에서 받은 빌드를 열면 **휴지통으로 이동**만 나옵니다.
-열기 버튼이 없습니다. 더블클릭과 Control-클릭은 둘 다 안 됩니다.
-Apple이 이 ad-hoc 빌드를 공증하지 않아서, GUI로는 그게 전부입니다.
+```sh
+curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
+```
 
-Gatekeeper가 검사하는 대상은 **지금 실행하는 파일**입니다. DMG에서
-quarantine을 지워도 Applications로 복사된 앱에는 그대로 남습니다.
-패키지 설치 프로그램을 써도 그 점은 같습니다.
-
-1. [Releases](https://github.com/innocarpe/dontsleep/releases) 에서
-   `DontSleep-*.dmg` 를 받습니다.
-2. 디스크 이미지를 엽니다. **휴지통으로 이동**만 나오면:
-
-   ```sh
-   xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
-   open ~/Downloads/DontSleep-*.dmg
-   ```
-3. **DontSleep.app** 을 이미지 안의 **Applications** 폴더로 드래그합니다.
-4. 그 설치된 앱에서 quarantine을 지운 뒤 엽니다:
-
-   ```sh
-   xattr -dr com.apple.quarantine /Applications/DontSleep.app
-   open /Applications/DontSleep.app
-   ```
-5. 메뉴바에 노트북 아이콘이 생깁니다. 첫 실행 창이 **지금 계정에만**
-   `/etc/sudoers.d/dontsleep` 를 쓰며, 허용하는 명령은 다음뿐입니다.
+맥 비밀번호를 한 번 묻습니다. **지금 계정에만**
+`/etc/sudoers.d/dontsleep` 를 쓰며, 허용하는 명령은 다음뿐입니다.
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-이 비밀번호는 Gatekeeper와 다른 것입니다. `sudo` 전체를 열지 않습니다.
+`sudo` 전체를 열지 않습니다. 메뉴바에 노트북 아이콘이 생깁니다.
+
+파이프가 불편하면 먼저 [install.sh](install.sh) 를 읽으면 됩니다.
+디스크 이미지가 이미 있으면: `zsh install.sh ~/Downloads/DontSleep-*.dmg`.
 
 지울 때: `sudo rm /etc/sudoers.d/dontsleep`.
 

@@ -51,42 +51,30 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
 
 ## 安装
 
-发布的磁盘映像是 **ad-hoc 签名**，未经公证。系统提示“无法验证开发者”
-是预期行为。
+发布构建是 **ad-hoc 签名**，未经公证。在当前 macOS（Tahoe）上，用
+Finder 打开下载的副本只会弹出 **移到废纸篓**。Gatekeeper 检查的是
+你启动的那个应用，所以清除磁盘映像上的隔离属性没有用。不要下载后
+双击应用。
 
-### 磁盘映像
+下面这一条命令会复制应用、清除该副本的隔离属性、写入辅助规则，
+并打开 DontSleep：
 
-在当前 macOS（Tahoe）上，下载的构建只会弹出 **移到废纸篓**。
-没有“打开”。双击和按住 Control 单击都无效。这是未经公证的
-ad-hoc 构建的正常结果。
+```sh
+curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
+```
 
-Gatekeeper 检查的是你正在启动的那个文件。清除 `.dmg` 上的隔离属性
-不会清除 Applications 里那份拷贝。用安装包也一样。
-
-1. 从 [Releases](https://github.com/innocarpe/dontsleep/releases) 下载
-   `DontSleep-*.dmg`。
-2. 打开磁盘映像。如果只有“移到废纸篓”：
-
-   ```sh
-   xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
-   open ~/Downloads/DontSleep-*.dmg
-   ```
-3. 把 **DontSleep.app** 拖到映像里的 **Applications** 文件夹。
-4. 清除这份已安装应用上的隔离属性，然后打开它：
-
-   ```sh
-   xattr -dr com.apple.quarantine /Applications/DontSleep.app
-   open /Applications/DontSleep.app
-   ```
-5. 菜单栏会出现笔记本图标。首次启动窗口会只为**当前账户**写入
-   `/etc/sudoers.d/dontsleep`，且只允许：
+macOS 会询问一次密码。它只为**当前账户**写入
+`/etc/sudoers.d/dontsleep`，且只允许：
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-这次密码提示不是 Gatekeeper。不会开放全部 `sudo`。
+不会开放全部 `sudo`。菜单栏会出现笔记本图标。
+
+若不希望把脚本直接交给 shell，请先阅读 [install.sh](install.sh)。
+若磁盘映像已在本地：`zsh install.sh ~/Downloads/DontSleep-*.dmg`。
 
 要删除：`sudo rm /etc/sudoers.d/dontsleep`。
 

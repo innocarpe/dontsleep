@@ -12,29 +12,22 @@ out="${1:-${root}/DontSleep-${version}.dmg}"
 
 mkdir -p "$payload"
 /usr/bin/ditto "$stage" "${payload}/DontSleep.app"
-/bin/ln -s /Applications "${payload}/Applications"
 cat > "${payload}/Install.txt" <<'TXT'
 DontSleep
 
-1. Drag DontSleep.app onto the Applications folder.
-2. Gatekeeper checks that copy, not this disk image. In Terminal:
+Do not open this image and double-click the app. On Tahoe that only
+offers Move to Trash. Gatekeeper checks the app you launch.
 
-     xattr -dr com.apple.quarantine /Applications/DontSleep.app
-     open /Applications/DontSleep.app
+In Terminal:
 
-3. If the disk image itself will not open:
+  curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 
-     xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
-     open ~/Downloads/DontSleep-*.dmg
+That copies the app, clears quarantine on that copy, asks for your
+password once (two pmset lines, your account only), and opens DontSleep.
 
-   Then do steps 1 and 2.
+If this disk image is already on disk:
 
-4. First launch asks for your Mac password once. That allows two
-   pmset commands without a password, for your account only.
-
-This build is not notarized. On Tahoe the only dialog is Move to Trash.
-Double-click and Control-click both fail until you clear quarantine
-on the app in Applications.
+  curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh -s -- ~/Downloads/DontSleep-*.dmg
 
 While DontSleep is on, a closed lid will not sleep the Mac. Watch the battery.
 TXT

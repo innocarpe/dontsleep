@@ -53,46 +53,31 @@ ID では署名されていません（[インストール](#インストール)
 
 ## インストール
 
-リリースのディスクイメージは **ad-hoc 署名**で、公証されていません。
-「開発元を確認できない」と出るのが普通です。
+リリースは **ad-hoc 署名**で、公証されていません。いまの macOS
+（Tahoe）では、ダウンロードしたコピーを Finder で開くと
+**ゴミ箱に入れる** しか出ません。Gatekeeper が見るのは起動するアプリ
+なので、ディスクイメージの隔離属性を消しても意味がありません。
+アプリを入手してダブルクリックしないでください。
 
-### ディスクイメージから
+次の 1 行がアプリのコピー、そのコピーの隔離解除、ヘルパーの書き込み、
+DontSleep の起動まで行います。
 
-いまの macOS（Tahoe）では、ダウンロードしたビルドを開くと
-**ゴミ箱に入れる** しか出ません。開くボタンはありません。
-ダブルクリックも Control-クリックもダメです。公証されていない
-ad-hoc ビルドでは、GUI はそれだけです。
+```sh
+curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
+```
 
-Gatekeeper が見るのは、いま起動しようとしているファイルです。
-`.dmg` の隔離属性を消しても、Applications にコピーしたアプリには
-残ります。パッケージインストーラでも同じです。
-
-1. [Releases](https://github.com/innocarpe/dontsleep/releases) から
-   `DontSleep-*.dmg` を入手します。
-2. ディスクイメージを開きます。「ゴミ箱に入れる」しか出ないときは:
-
-   ```sh
-   xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
-   open ~/Downloads/DontSleep-*.dmg
-   ```
-3. **DontSleep.app** をイメージ内の **Applications** フォルダへ
-   ドラッグします。
-4. そのインストール済みアプリの隔離属性を消してから開きます:
-
-   ```sh
-   xattr -dr com.apple.quarantine /Applications/DontSleep.app
-   open /Applications/DontSleep.app
-   ```
-5. メニューバーにノートのアイコンが出ます。初回起動のウィンドウが
-   **今のアカウントだけ** に `/etc/sudoers.d/dontsleep` を書き、次だけを
-   許可します。
+Mac のパスワードを 1 回求めます。**今のアカウントだけ** に
+`/etc/sudoers.d/dontsleep` を書き、次だけを許可します。
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-このパスワードは Gatekeeper とは別です。sudo 全体は開きません。
+sudo 全体は開きません。メニューバーにノートのアイコンが出ます。
+
+シェルに直接渡したくなければ、先に [install.sh](install.sh) を読んでください。
+ディスクイメージが既にあるときは: `zsh install.sh ~/Downloads/DontSleep-*.dmg`。
 
 消すとき: `sudo rm /etc/sudoers.d/dontsleep`。
 

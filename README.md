@@ -53,44 +53,30 @@ Korean, Simplified Chinese, and Japanese.
 
 ## Install
 
-The release disk image is **ad-hoc signed, not notarized**. macOS will warn
-that the developer cannot be verified. That is expected.
+The release is **ad-hoc signed, not notarized**. On current macOS (Tahoe),
+opening a downloaded copy from Finder shows **Move to Trash** only — no
+Open button. Gatekeeper checks the app you launch, so clearing quarantine
+on a disk image does not help. Do not download and double-click the app.
 
-### From the disk image
+One command copies the app, clears quarantine on that copy, writes the
+helper, and opens DontSleep:
 
-On current macOS (Tahoe), opening a downloaded build shows **Move to
-Trash** only. There is no Open button. Double-click and Control-click
-both fail. Apple has not notarized this ad-hoc build, so that dialog is
-the whole GUI.
+```sh
+curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
+```
 
-Gatekeeper checks the file you launch. Clearing quarantine on the
-`.dmg` does not clear it on the copy in Applications. A package
-installer would not change that either.
-
-1. Download `DontSleep-*.dmg` from
-   [Releases](https://github.com/innocarpe/dontsleep/releases).
-2. Open the disk image. If macOS only offers Move to Trash:
-
-   ```sh
-   xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
-   open ~/Downloads/DontSleep-*.dmg
-   ```
-3. Drag **DontSleep.app** onto the **Applications** folder in the image.
-4. Clear quarantine on that installed app, then open it:
-
-   ```sh
-   xattr -dr com.apple.quarantine /Applications/DontSleep.app
-   open /Applications/DontSleep.app
-   ```
-5. A laptop icon appears in the menu bar. The first-launch window
-   writes `/etc/sudoers.d/dontsleep` for **your account only**, limited to:
+macOS asks for your password once. That writes
+`/etc/sudoers.d/dontsleep` for **your account only**, limited to:
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-That password prompt is not Gatekeeper. It does not unlock all of `sudo`.
+It does not unlock all of `sudo`. A laptop icon appears in the menu bar.
+
+Read [install.sh](install.sh) first if you prefer not to pipe to a shell.
+If you already have the disk image: `zsh install.sh ~/Downloads/DontSleep-*.dmg`.
 
 To remove the helper later: `sudo rm /etc/sudoers.d/dontsleep`.
 
