@@ -97,6 +97,10 @@ cd dontsleep
 
 ## Usage
 
+The first launch walks through what DontSleep changes, why a password is
+asked, and how the menu bar works. Open **How to Use…** from the menu to
+see that again.
+
 Leave it in the menu bar. Turn it off when you want the laptop to sleep in
 a bag. **Start at Login** writes `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`.
 

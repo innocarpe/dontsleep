@@ -94,6 +94,9 @@ cd dontsleep
 
 ## 使用
 
+首次启动会说明会改什么、为什么要密码、以及菜单栏怎么用。可在菜单中
+打开 **使用方法…** 再次查看。
+
 留在菜单栏即可。放进包里之前请先关闭。**登录时启动** 会写入
 `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`。
 
