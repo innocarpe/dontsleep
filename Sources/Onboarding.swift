@@ -15,6 +15,7 @@ final class OnboardingController: NSObject {
 
     private var window: NSWindow?
     private var model: OnboardingModel?
+    private var lastContentSize: NSSize = .zero
     var onFinish: (() -> Void)?
 
     func present(kind: OnboardingModel.Kind, needsHelper: Bool) {
@@ -31,13 +32,19 @@ final class OnboardingController: NSObject {
         model.onClose = { [weak self] in
             self?.close()
         }
+        model.onSizeChange = { [weak self] size in
+            self?.resize(to: size)
+        }
         self.model = model
 
         let host = NSHostingController(rootView: OnboardingView(model: model))
+        if #available(macOS 13.0, *) {
+            host.sizingOptions = []
+        }
         let window = NSWindow(contentViewController: host)
         window.title = AppIdentity.name
         window.styleMask = [.titled, .closable]
-        window.setContentSize(NSSize(width: 520, height: 580))
+        window.setContentSize(NSSize(width: 440, height: 280))
         window.center()
         window.isReleasedWhenClosed = false
         window.delegate = self
@@ -61,6 +68,22 @@ final class OnboardingController: NSObject {
         } catch {
             model.helperError = error.localizedDescription
         }
+    }
+
+    private func resize(to size: CGSize) {
+        guard let window, size.width > 0, size.height > 0 else { return }
+        let rounded = NSSize(width: ceil(size.width), height: ceil(size.height))
+        if abs(rounded.width - lastContentSize.width) < 1,
+           abs(rounded.height - lastContentSize.height) < 1 {
+            return
+        }
+        lastContentSize = rounded
+        let old = window.frame
+        window.setContentSize(rounded)
+        var frame = window.frame
+        frame.origin.x = old.midX - frame.width / 2
+        frame.origin.y = old.midY - frame.height / 2
+        window.setFrame(frame, display: true, animate: true)
     }
 
     private func close() {
@@ -100,6 +123,7 @@ final class OnboardingModel: ObservableObject {
 
     var onRequestHelper: (() -> Void)?
     var onClose: (() -> Void)?
+    var onSizeChange: ((CGSize) -> Void)?
 
     enum Kind {
         case firstLaunch
@@ -184,15 +208,21 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 0) {
             header
             Divider()
-            ScrollView {
-                stepBody
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(24)
-            }
+            stepBody
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
             Divider()
             footer
         }
-        .frame(width: 520, height: 580)
+        .frame(width: 440)
+        .fixedSize(horizontal: true, vertical: true)
+        .background(
+            GeometryReader { proxy in
+                Color.clear.preference(key: OnboardingSizeKey.self, value: proxy.size)
+            }
+        )
+        .onPreferenceChange(OnboardingSizeKey.self) { model.onSizeChange?($0) }
     }
 
     private var header: some View {
@@ -210,9 +240,10 @@ struct OnboardingView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            Spacer()
+            Spacer(minLength: 0)
         }
-        .padding(20)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
     }
 
     private var title: String {
@@ -313,6 +344,14 @@ struct OnboardingView: View {
                 .buttonStyle(.borderedProminent)
             }
         }
-        .padding(16)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+    }
+}
+
+private struct OnboardingSizeKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
     }
 }
