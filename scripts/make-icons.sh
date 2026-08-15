@@ -45,4 +45,12 @@ swiftc -O -sdk "$sdk" -framework AppKit \
   "${root}/scripts/render-menubar.swift"
 /tmp/dontsleep-render-menubar "$assets"
 
-echo "Icons in ${assets}"
+mkdir -p "${root}/docs/assets"
+swiftc -O -sdk "$sdk" -framework AppKit \
+  -o /tmp/dontsleep-render-readme-icon \
+  "${root}/scripts/render-readme-icon.swift"
+/tmp/dontsleep-render-readme-icon \
+  "${assets}/AppIcon-1024.png" \
+  "${root}/docs/assets/app-icon.png"
+
+echo "Icons in ${assets} and docs/assets/app-icon.png"
