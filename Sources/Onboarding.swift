@@ -91,10 +91,11 @@ final class OnboardingController: NSObject {
         }
         lastContentSize = size
         let old = window.frame
+        let top = old.maxY
         window.setContentSize(size)
         var frame = window.frame
-        frame.origin.x = old.midX - frame.width / 2
-        frame.origin.y = old.midY - frame.height / 2
+        frame.origin.x = old.origin.x
+        frame.origin.y = top - frame.height
         window.setFrame(frame, display: true, animate: false)
     }
 
