@@ -60,35 +60,33 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
 没有“打开”。双击和按住 Control 单击都无效。这是未经公证的
 ad-hoc 构建的正常结果。
 
+Gatekeeper 检查的是你正在启动的那个文件。清除 `.dmg` 上的隔离属性
+不会清除 Applications 里那份拷贝。用安装包也一样。
+
 1. 从 [Releases](https://github.com/innocarpe/dontsleep/releases) 下载
    `DontSleep-*.dmg`。
-2. 在终端执行：
+2. 打开磁盘映像。如果只有“移到废纸篓”：
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
-
-   若应用已在 Applications：
+3. 把 **DontSleep.app** 拖到映像里的 **Applications** 文件夹。
+4. 清除这份已安装应用上的隔离属性，然后打开它：
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/DontSleep.app
    open /Applications/DontSleep.app
    ```
-3. 双击 **Install DontSleep.pkg** 并输入 Mac 密码。
-   会复制应用、允许两条 `pmset`、并在登录时启动。
-4. 菜单栏会出现笔记本图标。
-
-安装程序的密码与 Gatekeeper 不是一回事。它只为**当前账户** 写入
-`/etc/sudoers.d/dontsleep`，且只允许：
+5. 菜单栏会出现笔记本图标。首次启动窗口会只为**当前账户**写入
+   `/etc/sudoers.d/dontsleep`，且只允许：
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-不会开放全部 `sudo`。若只拷贝应用而不用安装包，DontSleep 会在首次启动时
-自己询问该密码。
+这次密码提示不是 Gatekeeper。不会开放全部 `sudo`。
 
 要删除：`sudo rm /etc/sudoers.d/dontsleep`。
 

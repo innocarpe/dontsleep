@@ -6,44 +6,35 @@ version="$(/usr/bin/defaults read "${root}/Info.plist" CFBundleShortVersionStrin
 stage="${root}/dist/DontSleep.app"
 work="$(/usr/bin/mktemp -d /tmp/dontsleep-dmg.XXXXXX)"
 payload="${work}/DontSleep"
-pkgroot="${work}/pkgroot"
-pkgscripts="${work}/pkgscripts"
-pkg="${work}/Install DontSleep.pkg"
 out="${1:-${root}/DontSleep-${version}.dmg}"
 
 "${root}/scripts/build-app.sh" "$stage"
 
-mkdir -p "${pkgroot}/Applications"
-/usr/bin/ditto "$stage" "${pkgroot}/Applications/DontSleep.app"
-
-mkdir -p "$pkgscripts"
-/bin/cp "${root}/scripts/pkg/postinstall" "${pkgscripts}/postinstall"
-/bin/chmod 755 "${pkgscripts}/postinstall"
-
-/usr/bin/pkgbuild \
-  --identifier com.innocarpe.dontsleep \
-  --version "$version" \
-  --root "$pkgroot" \
-  --install-location / \
-  --scripts "$pkgscripts" \
-  "$pkg" >/dev/null
-
 mkdir -p "$payload"
-/bin/cp "$pkg" "${payload}/Install DontSleep.pkg"
+/usr/bin/ditto "$stage" "${payload}/DontSleep.app"
+/bin/ln -s /Applications "${payload}/Applications"
 cat > "${payload}/Install.txt" <<'TXT'
 DontSleep
 
-1. Double-click Install DontSleep.pkg.
-2. Enter your Mac password when the installer asks.
-   That copies the app to Applications, allows two pmset
-   commands without a password, and starts DontSleep at login.
-3. On Tahoe the only dialog is Move to Trash. Double-click and
-   Control-click both fail. Before opening the image:
+1. Drag DontSleep.app onto the Applications folder.
+2. Gatekeeper checks that copy, not this disk image. In Terminal:
+
+     xattr -dr com.apple.quarantine /Applications/DontSleep.app
+     open /Applications/DontSleep.app
+
+3. If the disk image itself will not open:
 
      xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
      open ~/Downloads/DontSleep-*.dmg
 
-This build is not notarized. That dialog is expected.
+   Then do steps 1 and 2.
+
+4. First launch asks for your Mac password once. That allows two
+   pmset commands without a password, for your account only.
+
+This build is not notarized. On Tahoe the only dialog is Move to Trash.
+Double-click and Control-click both fail until you clear quarantine
+on the app in Applications.
 
 While DontSleep is on, a closed lid will not sleep the Mac. Watch the battery.
 TXT

@@ -63,37 +63,36 @@ ID では署名されていません（[インストール](#インストール)
 ダブルクリックも Control-クリックもダメです。公証されていない
 ad-hoc ビルドでは、GUI はそれだけです。
 
+Gatekeeper が見るのは、いま起動しようとしているファイルです。
+`.dmg` の隔離属性を消しても、Applications にコピーしたアプリには
+残ります。パッケージインストーラでも同じです。
+
 1. [Releases](https://github.com/innocarpe/dontsleep/releases) から
    `DontSleep-*.dmg` を入手します。
-2. ターミナルで:
+2. ディスクイメージを開きます。「ゴミ箱に入れる」しか出ないときは:
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
-
-   すでに Applications にある場合:
+3. **DontSleep.app** をイメージ内の **Applications** フォルダへ
+   ドラッグします。
+4. そのインストール済みアプリの隔離属性を消してから開きます:
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/DontSleep.app
    open /Applications/DontSleep.app
    ```
-3. **Install DontSleep.pkg** をダブルクリックし、Mac のパスワードを
-   入力します。アプリのコピー、`pmset` 2 行の許可、ログイン時起動まで
-   行います。
-4. メニューバーにノートのアイコンが出ます。
-
-インストーラのパスワードは Gatekeeper とは別です。
-**今のアカウントだけ** に `/etc/sudoers.d/dontsleep` を書き、次だけを
-許可します。
+5. メニューバーにノートのアイコンが出ます。初回起動のウィンドウが
+   **今のアカウントだけ** に `/etc/sudoers.d/dontsleep` を書き、次だけを
+   許可します。
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-sudo 全体は開きません。パッケージを使わずアプリだけコピーした場合は、
-初回起動時に DontSleep がそのパスワードを自分で尋ねます。
+このパスワードは Gatekeeper とは別です。sudo 全体は開きません。
 
 消すとき: `sudo rm /etc/sudoers.d/dontsleep`。
 

@@ -61,36 +61,34 @@ macOS 언어를 따르며, 기본은 영어이고 한국어·중국어 간체·�
 열기 버튼이 없습니다. 더블클릭과 Control-클릭은 둘 다 안 됩니다.
 Apple이 이 ad-hoc 빌드를 공증하지 않아서, GUI로는 그게 전부입니다.
 
+Gatekeeper가 검사하는 대상은 **지금 실행하는 파일**입니다. DMG에서
+quarantine을 지워도 Applications로 복사된 앱에는 그대로 남습니다.
+패키지 설치 프로그램을 써도 그 점은 같습니다.
+
 1. [Releases](https://github.com/innocarpe/dontsleep/releases) 에서
    `DontSleep-*.dmg` 를 받습니다.
-2. 터미널에서:
+2. 디스크 이미지를 엽니다. **휴지통으로 이동**만 나오면:
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
-
-   이미 Applications에 앱이 있다면:
+3. **DontSleep.app** 을 이미지 안의 **Applications** 폴더로 드래그합니다.
+4. 그 설치된 앱에서 quarantine을 지운 뒤 엽니다:
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/DontSleep.app
    open /Applications/DontSleep.app
    ```
-3. **Install DontSleep.pkg** 를 더블클릭하고 맥 비밀번호를 입력합니다.
-   앱 복사, `pmset` 두 줄 허용, 로그인 시 시작까지 합니다.
-4. 메뉴바에 노트북 아이콘이 생깁니다.
-
-설치 프로그램이 묻는 비밀번호는 Gatekeeper와 다른 것입니다.
-**지금 계정에만** `/etc/sudoers.d/dontsleep` 를 쓰며, 허용하는 명령은
-다음뿐입니다.
+5. 메뉴바에 노트북 아이콘이 생깁니다. 첫 실행 창이 **지금 계정에만**
+   `/etc/sudoers.d/dontsleep` 를 쓰며, 허용하는 명령은 다음뿐입니다.
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-`sudo` 전체를 열지 않습니다. 패키지 없이 앱만 복사하면, 첫 실행 때
-DontSleep이 그 비밀번호를 직접 묻습니다.
+이 비밀번호는 Gatekeeper와 다른 것입니다. `sudo` 전체를 열지 않습니다.
 
 지울 때: `sudo rm /etc/sudoers.d/dontsleep`.
 

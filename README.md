@@ -63,36 +63,34 @@ Trash** only. There is no Open button. Double-click and Control-click
 both fail. Apple has not notarized this ad-hoc build, so that dialog is
 the whole GUI.
 
+Gatekeeper checks the file you launch. Clearing quarantine on the
+`.dmg` does not clear it on the copy in Applications. A package
+installer would not change that either.
+
 1. Download `DontSleep-*.dmg` from
    [Releases](https://github.com/innocarpe/dontsleep/releases).
-2. In Terminal:
+2. Open the disk image. If macOS only offers Move to Trash:
 
    ```sh
    xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
    open ~/Downloads/DontSleep-*.dmg
    ```
-
-   If the app is already in Applications:
+3. Drag **DontSleep.app** onto the **Applications** folder in the image.
+4. Clear quarantine on that installed app, then open it:
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/DontSleep.app
    open /Applications/DontSleep.app
    ```
-3. Double-click **Install DontSleep.pkg** and enter your Mac password.
-   The installer copies the app, allows two `pmset` lines without a
-   password, and starts DontSleep at login.
-4. A laptop icon appears in the menu bar.
-
-The installer password is a different prompt from Gatekeeper. It writes
-`/etc/sudoers.d/dontsleep` for **your account only**, limited to:
+5. A laptop icon appears in the menu bar. The first-launch window
+   writes `/etc/sudoers.d/dontsleep` for **your account only**, limited to:
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-It does not unlock all of `sudo`. If you skip the package and only copy the
-app, DontSleep will ask for that password itself on first launch.
+That password prompt is not Gatekeeper. It does not unlock all of `sudo`.
 
 To remove the helper later: `sudo rm /etc/sudoers.d/dontsleep`.
 
