@@ -1,8 +1,14 @@
 "menu.turnOn" = "Turn On";
 "menu.turnOff" = "Turn Off";
 "menu.startAtLogin" = "Start at Login";
+"menu.installHelper" = "Allow Closed-Lid Control…";
 "menu.refresh" = "Refresh";
 "menu.quit" = "Quit";
+
+"setup.title" = "One-time setup";
+"setup.message" = "DontSleep needs permission to change closed-lid sleep. macOS will ask for your administrator password once. This only allows two pmset commands, not all of sudo.";
+"setup.continue" = "Continue";
+"setup.later" = "Later";
 "menu.status.on" = "Now: On (stays awake with the lid closed)";
 "menu.status.off" = "Now: Off (sleeps when the lid closes)";
 "menu.status.unknown" = "Now: status unknown";
@@ -14,5 +20,5 @@
 "error.spawn" = "Could not start %@";
 "error.command" = "%@ exited with status %d";
 "error.commandDetail" = "%@ exited with status %d — %@";
-"error.sudoers" = "Cannot run pmset without a password. Install /etc/sudoers.d/dontsleep first.";
+"error.sudoers" = "DontSleep still cannot change closed-lid sleep. Enter the administrator password when asked, or run the installer again.";
 "error.verify" = "pmset did not report the value that was just set.";

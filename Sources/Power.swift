@@ -19,6 +19,14 @@ enum Power {
         }
     }
 
+    /// True when the two allowed `pmset` lines can run with `sudo -n`.
+    /// Rewrites the current value so the machine's sleep flag does not change.
+    static func hasPasswordlessAccess() -> Bool {
+        guard case .success(let on) = sleepDisabled() else { return false }
+        let flag = on ? "1" : "0"
+        return (try? run(sudo, ["-n", pmset, "-a", "disablesleep", flag])) != nil
+    }
+
     static func setSleepDisabled(_ disabled: Bool) throws {
         let flag = disabled ? "1" : "0"
         // Must match /etc/sudoers.d/dontsleep argv exactly.

@@ -1,8 +1,14 @@
 "menu.turnOn" = "开启";
 "menu.turnOff" = "关闭";
 "menu.startAtLogin" = "登录时启动";
+"menu.installHelper" = "允许控制合盖休眠…";
 "menu.refresh" = "刷新";
 "menu.quit" = "退出";
+
+"setup.title" = "一次性设置";
+"setup.message" = "DontSleep 需要权限才能更改合盖休眠。macOS 会询问一次管理员密码。只会允许两条 pmset 命令，不会开放全部 sudo。";
+"setup.continue" = "继续";
+"setup.later" = "稍后";
 "menu.status.on" = "当前：已开启（合盖后仍保持唤醒）";
 "menu.status.off" = "当前：已关闭（合盖后休眠）";
 "menu.status.unknown" = "当前：状态未知";
@@ -14,5 +20,5 @@
 "error.spawn" = "无法启动 %@";
 "error.command" = "%@ 退出，状态码 %d";
 "error.commandDetail" = "%@ 退出，状态码 %d — %@";
-"error.sudoers" = "无法在不输入密码的情况下运行 pmset。请先安装 /etc/sudoers.d/dontsleep。";
+"error.sudoers" = "仍无法更改合盖休眠。请在提示时输入管理员密码，或重新运行安装程序。";
 "error.verify" = "已更改设置，但 pmset 未报告对应状态。";

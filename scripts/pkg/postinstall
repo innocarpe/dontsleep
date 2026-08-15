@@ -1,0 +1,42 @@
+#!/bin/zsh
+set -euo pipefail
+
+user="$(/usr/bin/stat -f%Su /dev/console)"
+if [[ -z "$user" || "$user" == "root" || "$user" == "_mbsetupuser" ]]; then
+  exit 0
+fi
+
+rule="${user} ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 1, /usr/bin/pmset -a disablesleep 0"
+tmp="$(/usr/bin/mktemp /tmp/dontsleep-sudoers.XXXXXX)"
+printf '%s\n' "$rule" > "$tmp"
+/usr/sbin/visudo -cf "$tmp"
+/usr/bin/install -m 0440 -o root -g wheel "$tmp" /etc/sudoers.d/dontsleep
+/usr/sbin/visudo -cf /etc/sudoers.d/dontsleep
+/bin/rm -f "$tmp"
+
+home="$(/usr/bin/dscl . -read "/Users/${user}" NFSHomeDirectory | /usr/bin/awk '{print $2}')"
+agent_dir="${home}/Library/LaunchAgents"
+/bin/mkdir -p "$agent_dir"
+cat > "${agent_dir}/com.innocarpe.dontsleep.plist" <<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.innocarpe.dontsleep</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Applications/DontSleep.app/Contents/MacOS/DontSleep</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<false/>
+</dict>
+</plist>
+EOF
+/usr/sbin/chown "${user}:staff" "${agent_dir}/com.innocarpe.dontsleep.plist"
+/bin/chmod 644 "${agent_dir}/com.innocarpe.dontsleep.plist"
+
+/usr/bin/sudo -u "$user" /usr/bin/open /Applications/DontSleep.app || true
+exit 0

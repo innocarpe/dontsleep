@@ -6,35 +6,42 @@ version="$(/usr/bin/defaults read "${root}/Info.plist" CFBundleShortVersionStrin
 stage="${root}/dist/DontSleep.app"
 work="$(/usr/bin/mktemp -d /tmp/dontsleep-dmg.XXXXXX)"
 payload="${work}/DontSleep"
+pkgroot="${work}/pkgroot"
+pkgscripts="${work}/pkgscripts"
+pkg="${work}/Install DontSleep.pkg"
 out="${1:-${root}/DontSleep-${version}.dmg}"
 
 "${root}/scripts/build-app.sh" "$stage"
 
-mkdir -p "$payload"
-/usr/bin/ditto "$stage" "${payload}/DontSleep.app"
-/bin/ln -s /Applications "${payload}/Applications"
-/bin/cp "${root}/scripts/install-sudoers.sh" "${payload}/Install Sudoers.command"
-/bin/chmod +x "${payload}/Install Sudoers.command"
+mkdir -p "${pkgroot}/Applications"
+/usr/bin/ditto "$stage" "${pkgroot}/Applications/DontSleep.app"
 
+mkdir -p "$pkgscripts"
+/bin/cp "${root}/scripts/pkg/postinstall" "${pkgscripts}/postinstall"
+/bin/chmod 755 "${pkgscripts}/postinstall"
+
+/usr/bin/pkgbuild \
+  --identifier com.innocarpe.dontsleep \
+  --version "$version" \
+  --root "$pkgroot" \
+  --install-location / \
+  --scripts "$pkgscripts" \
+  "$pkg" >/dev/null
+
+mkdir -p "$payload"
+/bin/cp "$pkg" "${payload}/Install DontSleep.pkg"
 cat > "${payload}/Install.txt" <<'TXT'
 DontSleep
 
-1. Drag DontSleep.app onto Applications.
-2. Double-click Install Sudoers.command.
-   That is scripts/install-sudoers.sh. It does not install the app.
-   It writes /etc/sudoers.d/dontsleep so only these two commands
-   can run without a password:
+1. Double-click Install DontSleep.pkg.
+2. Enter your Mac password when the installer asks.
+   That copies the app to Applications, allows two pmset
+   commands without a password, and starts DontSleep at login.
+3. If macOS says the developer cannot be verified:
+   Control-click the package → Open → Open.
+   Or System Settings → Privacy & Security → Open Anyway.
 
-     pmset -a disablesleep 1
-     pmset -a disablesleep 0
-
-   You will be asked for an administrator password once.
-3. Open DontSleep.app. Left-click toggles. Right-click opens the menu.
-
-The build is not notarized. If macOS blocks the app or the .command file:
-Control-click → Open → Open.
-Or System Settings → Privacy & Security → Open Anyway.
-xattr -d com.apple.quarantine is optional, not the default path.
+This build is not notarized. That warning is expected.
 
 While DontSleep is on, a closed lid will not sleep the Mac. Watch the battery.
 TXT

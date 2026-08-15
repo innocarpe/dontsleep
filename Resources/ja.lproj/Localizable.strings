@@ -1,8 +1,14 @@
 "menu.turnOn" = "オン";
 "menu.turnOff" = "オフ";
 "menu.startAtLogin" = "ログイン時に開く";
+"menu.installHelper" = "カバー制御を許可…";
 "menu.refresh" = "再読み込み";
 "menu.quit" = "終了";
+
+"setup.title" = "初回だけの設定";
+"setup.message" = "DontSleep がカバーを閉じたスリープを変えるには権限が必要です。macOS が管理者パスワードを一度尋ねます。sudo 全体ではなく、pmset の 2 コマンドだけを許可します。";
+"setup.continue" = "続ける";
+"setup.later" = "あとで";
 "menu.status.on" = "現在: オン（カバーを閉じてもスリープしません）";
 "menu.status.off" = "現在: オフ（カバーを閉じるとスリープします）";
 "menu.status.unknown" = "現在: 状態不明";
@@ -14,5 +20,5 @@
 "error.spawn" = "%@ を起動できません";
 "error.command" = "%@ がステータス %d で終了しました";
 "error.commandDetail" = "%@ がステータス %d で終了しました — %@";
-"error.sudoers" = "パスワードなしで pmset を実行できません。先に /etc/sudoers.d/dontsleep をインストールしてください。";
+"error.sudoers" = "カバーのスリープをまだ変更できません。パスワードを入力するか、インストーラを再実行してください。";
 "error.verify" = "設定を変更しましたが、pmset の状態が一致しません。";

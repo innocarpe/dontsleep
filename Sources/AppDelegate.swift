@@ -9,9 +9,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var onItem: NSMenuItem!
     private var offItem: NSMenuItem!
     private var loginMenuItem: NSMenuItem!
+    private var setupItem: NSMenuItem!
     private var lastOn: Bool?
     private var didRender = false
     private var poppingMenu = false
+    private var helperReady = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let others = NSRunningApplication.runningApplications(withBundleIdentifier: AppIdentity.bundleID)
@@ -51,6 +53,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
         loginMenuItem = item(L10n.string("menu.startAtLogin"), action: #selector(toggleLogin), key: "")
         menu.addItem(loginMenuItem)
+        setupItem = item(L10n.string("menu.installHelper"), action: #selector(installHelper), key: "")
+        menu.addItem(setupItem)
         menu.addItem(item(L10n.string("menu.refresh"), action: #selector(refreshMenu), key: "r"))
         menu.addItem(.separator())
         menu.addItem(item(L10n.string("menu.quit"), action: #selector(quit), key: "q"))
@@ -60,6 +64,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             self?.refresh()
         }
         timer?.tolerance = 2
+
+        DispatchQueue.main.async { [weak self] in
+            self?.ensureHelper()
+        }
     }
 
     @objc private func statusItemClicked(_ sender: Any?) {
@@ -96,9 +104,46 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         LoginItem.setEnabled(!LoginItem.isEnabled)
         loginMenuItem.state = LoginItem.isEnabled ? .on : .off
     }
+    @objc private func installHelper() { promptForHelper(force: true) }
     @objc private func quit() { NSApp.terminate(nil) }
 
+    private func ensureHelper() {
+        helperReady = Power.hasPasswordlessAccess()
+        setupItem.isHidden = helperReady
+        if !helperReady {
+            promptForHelper(force: false)
+        }
+    }
+
+    private func promptForHelper(force: Bool) {
+        if !force && Power.hasPasswordlessAccess() { return }
+        let alert = NSAlert()
+        alert.alertStyle = .informational
+        alert.messageText = L10n.string("setup.title")
+        alert.informativeText = L10n.string("setup.message")
+        alert.addButton(withTitle: L10n.string("setup.continue"))
+        alert.addButton(withTitle: L10n.string("setup.later"))
+        NSApp.activate(ignoringOtherApps: true)
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        do {
+            try Sudoers.install()
+            helperReady = true
+            if !LoginItem.isEnabled {
+                LoginItem.setEnabled(true)
+            }
+        } catch {
+            helperReady = false
+            present(error)
+        }
+        didRender = false
+        refresh()
+    }
+
     private func apply(disabled: Bool) {
+        if !helperReady {
+            promptForHelper(force: true)
+            if !helperReady { return }
+        }
         do {
             try Power.setSleepDisabled(disabled)
         } catch {
@@ -125,6 +170,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         loginMenuItem.state = LoginItem.isEnabled ? .on : .off
+        setupItem.isHidden = helperReady
         guard !didRender || lastOn != on else { return }
         didRender = true
         lastOn = on
