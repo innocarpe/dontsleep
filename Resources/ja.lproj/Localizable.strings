@@ -1,0 +1,18 @@
+"menu.turnOn" = "オン";
+"menu.turnOff" = "オフ";
+"menu.startAtLogin" = "ログイン時に開く";
+"menu.refresh" = "再読み込み";
+"menu.quit" = "終了";
+"menu.status.on" = "現在: オン（カバーを閉じてもスリープしません）";
+"menu.status.off" = "現在: オフ（カバーを閉じるとスリープします）";
+"menu.status.unknown" = "現在: 状態不明";
+
+"tooltip.on" = "DontSleep オン — カバーを閉じてもスリープしません";
+"tooltip.off" = "DontSleep オフ — カバーを閉じるとスリープします";
+"tooltip.unknown" = "DontSleep — 状態を読み取れません";
+
+"error.spawn" = "%@ を起動できません";
+"error.command" = "%@ がステータス %d で終了しました";
+"error.commandDetail" = "%@ がステータス %d で終了しました — %@";
+"error.sudoers" = "パスワードなしで pmset を実行できません。先に /etc/sudoers.d/dontsleep をインストールしてください。";
+"error.verify" = "設定を変更しましたが、pmset の状態が一致しません。";

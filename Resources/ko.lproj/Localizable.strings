@@ -1,0 +1,18 @@
+"menu.turnOn" = "켜기";
+"menu.turnOff" = "끄기";
+"menu.startAtLogin" = "로그인할 때 시작";
+"menu.refresh" = "새로고침";
+"menu.quit" = "종료";
+"menu.status.on" = "지금: 켜짐 (덮개를 닫아도 깨어 있음)";
+"menu.status.off" = "지금: 꺼짐 (덮개를 닫으면 잠)";
+"menu.status.unknown" = "지금: 상태 불명";
+
+"tooltip.on" = "DontSleep 켜짐 — 덮개를 닫아도 잠들지 않음";
+"tooltip.off" = "DontSleep 꺼짐 — 덮개를 닫으면 잠듦";
+"tooltip.unknown" = "DontSleep — 상태를 읽지 못함";
+
+"error.spawn" = "실행 실패: %@";
+"error.command" = "%@ 종료 코드 %d";
+"error.commandDetail" = "%@ 종료 코드 %d — %@";
+"error.sudoers" = "비밀번호 없이 pmset 을 실행할 수 없습니다. /etc/sudoers.d/dontsleep 를 먼저 설치하세요.";
+"error.verify" = "설정을 바꿨는데 pmset 상태가 따라오지 않았습니다.";
