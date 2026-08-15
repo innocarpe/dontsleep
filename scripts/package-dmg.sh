@@ -37,9 +37,13 @@ DontSleep
 2. Enter your Mac password when the installer asks.
    That copies the app to Applications, allows two pmset
    commands without a password, and starts DontSleep at login.
-3. If macOS says the developer cannot be verified:
-   Control-click the package → Open → Open.
-   Or System Settings → Privacy & Security → Open Anyway.
+3. On macOS Tahoe, Control-click → Open often does nothing.
+   Double-click the package once, then:
+   System Settings → Privacy & Security → Open Anyway.
+   If Open Anyway never appears:
+
+     xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
+     open ~/Downloads/DontSleep-*.dmg
 
 This build is not notarized. That warning is expected.
 

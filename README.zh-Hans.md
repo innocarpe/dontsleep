@@ -63,10 +63,17 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
    并在登录时启动 DontSleep。
 3. 菜单栏会出现笔记本图标。
 
-若 macOS 拒绝打开安装包：
+在 macOS Tahoe 上，按住 Control 单击 → 打开 **经常无效**。请按下面做：
 
-1. **按住 Control 单击 → 打开 → 打开。** 请先用这一步。
-2. 或：系统设置 → 隐私与安全性 → **仍要打开**。
+1. 先双击一次安装包，让系统记下这次拦截。
+2. 系统设置 → 隐私与安全性 → 滚到安全性 →
+   **仍要打开** → 打开。
+3. 如果始终没有 **仍要打开**，在终端去掉下载隔离后再打开磁盘映像：
+
+   ```sh
+   xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
+   open ~/Downloads/DontSleep-*.dmg
+   ```
 
 该警告来自 Gatekeeper（构建未经公证）。安装程序要的密码是另一回事：
 只为**当前账户** 写入 `/etc/sudoers.d/dontsleep`，且只允许：

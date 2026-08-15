@@ -65,10 +65,19 @@ that the developer cannot be verified. That is expected.
    without a password, and starts DontSleep at login.
 3. A laptop icon appears in the menu bar.
 
-If macOS refuses to open the package:
+On macOS Tahoe, Control-click → Open often does **not** work. Do this
+instead:
 
-1. **Control-click → Open → Open.** This is the usual path.
-2. Or System Settings → Privacy & Security → **Open Anyway**.
+1. Double-click the package once so macOS records the block.
+2. System Settings → Privacy & Security → scroll to Security →
+   **Open Anyway** → Open.
+3. If **Open Anyway** never appears, remove the download quarantine in
+   Terminal, then open the disk image again:
+
+   ```sh
+   xattr -dr com.apple.quarantine ~/Downloads/DontSleep-*.dmg
+   open ~/Downloads/DontSleep-*.dmg
+   ```
 
 That warning is Gatekeeper (the build is not notarized). The installer
 password is different: it is the one-time administrator prompt that writes
