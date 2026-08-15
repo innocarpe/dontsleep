@@ -1,4 +1,4 @@
-# <img src="docs/assets/app-icon.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
+# <img src="docs/assets/app-icon-rounded.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
 
 [English](README.md) · [한국어](README.ko.md) · [简体中文](README.zh-Hans.md) · [日本語](README.ja.md)
 
@@ -13,7 +13,7 @@ DontSleep 是一个很小的 macOS 菜单栏应用。它切换系统的 `disable
 右键打开菜单。
 
 <p align="center">
-  <img src="docs/assets/app-icon.png" alt="DontSleep 应用图标：略微打开的 Space Black 笔记本，键盘透出暖光" width="220" />
+  <img src="docs/assets/app-icon-rounded.png" alt="DontSleep 应用图标：略微打开的 Space Black 笔记本，键盘透出暖光" width="220" />
 </p>
 
 ---

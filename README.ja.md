@@ -1,4 +1,4 @@
-# <img src="docs/assets/app-icon.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
+# <img src="docs/assets/app-icon-rounded.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
 
 [English](README.md) · [한국어](README.ko.md) · [简体中文](README.zh-Hans.md) · [日本語](README.ja.md)
 
@@ -13,7 +13,7 @@ DontSleep は小さな macOS メニューバーアプリです。システムの
 スリープしないようにします。クリックでオン/オフ、右クリックでメニューです。
 
 <p align="center">
-  <img src="docs/assets/app-icon.png" alt="DontSleep のアプリアイコン。わずかに開いた Space Black のノートブックと、キーボードから漏れる暖かい光" width="220" />
+  <img src="docs/assets/app-icon-rounded.png" alt="DontSleep のアプリアイコン。わずかに開いた Space Black のノートブックと、キーボードから漏れる暖かい光" width="220" />
 </p>
 
 ---

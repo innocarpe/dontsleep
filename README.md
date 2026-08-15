@@ -1,4 +1,4 @@
-# <img src="docs/assets/app-icon.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
+# <img src="docs/assets/app-icon-rounded.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
 
 [English](README.md) · [한국어](README.ko.md) · [简体中文](README.zh-Hans.md) · [日本語](README.ja.md)
 
@@ -13,7 +13,7 @@ DontSleep is a tiny menu bar extra for macOS. It toggles the system
 battery or on power. Click the icon to switch; right-click for the menu.
 
 <p align="center">
-  <img src="docs/assets/app-icon.png" alt="DontSleep app icon: a Space Black MacBook with the lid slightly open and a warm glow from the keyboard" width="220" />
+  <img src="docs/assets/app-icon-rounded.png" alt="DontSleep app icon: a Space Black MacBook with the lid slightly open and a warm glow from the keyboard" width="220" />
 </p>
 
 ---

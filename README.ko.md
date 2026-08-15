@@ -1,4 +1,4 @@
-# <img src="docs/assets/app-icon.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
+# <img src="docs/assets/app-icon-rounded.png" alt="" width="36" height="36" align="left" />&nbsp; DontSleep
 
 [English](README.md) · [한국어](README.ko.md) · [简体中文](README.zh-Hans.md) · [日本語](README.ja.md)
 
@@ -13,7 +13,7 @@ DontSleep은 macOS 메뉴바 앱입니다. 시스템 `disablesleep` 플래그를
 토글되고, 오른쪽 클릭하면 메뉴가 열립니다.
 
 <p align="center">
-  <img src="docs/assets/app-icon.png" alt="DontSleep 앱 아이콘: 뚜껑이 살짝 열린 Space Black 맥북과 키보드에서 새는 따뜻한 빛" width="220" />
+  <img src="docs/assets/app-icon-rounded.png" alt="DontSleep 앱 아이콘: 뚜껑이 살짝 열린 Space Black 맥북과 키보드에서 새는 따뜻한 빛" width="220" />
 </p>
 
 ---
