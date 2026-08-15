@@ -59,14 +59,15 @@ ID では署名されていません（[インストール](#インストール)
 なので、ディスクイメージの隔離属性を消しても意味がありません。
 アプリを入手してダブルクリックしないでください。
 
-次の 1 行がアプリのコピー、そのコピーの隔離解除、ヘルパーの書き込み、
-DontSleep の起動まで行います。
+次の 1 行がアプリのコピー、そのコピーの隔離解除、DontSleep の起動まで
+行います。
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 ```
 
-Mac のパスワードを 1 回求めます。**今のアカウントだけ** に
+最初のウィンドウに小さなターミナルがあります。Enter を押すと
+macOS がパスワードを一度尋ね、**今のアカウントだけ** に
 `/etc/sudoers.d/dontsleep` を書き、次だけを許可します。
 
 ```
@@ -74,7 +75,7 @@ pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-sudo 全体は開きません。メニューバーにノートのアイコンが出ます。
+sudo 全体は開きません。この手順にターミナルアプリは不要です。
 
 シェルに直接渡したくなければ、先に [install.sh](install.sh) を読んでください。
 ディスクイメージが既にあるときは: `zsh install.sh ~/Downloads/DontSleep-*.dmg`。
@@ -86,16 +87,18 @@ sudo 全体は開きません。メニューバーにノートのアイコンが
 ```sh
 git clone https://github.com/innocarpe/dontsleep.git
 cd dontsleep
-./scripts/install-sudoers.sh
 ./build.sh
 ```
 
-`build.sh` は `/Applications/DontSleep.app` に入れます。
+`build.sh` は `/Applications/DontSleep.app` に入れます。ヘルパーは
+最初のウィンドウで完了します。シェルから書く場合は
+`./scripts/install-sudoers.sh`。
 
 ## 使い方
 
-初回起動で、何を変えるか、なぜパスワードが要るか、メニューバーの
-使い方を案内します。メニューの **使い方…** から再表示できます。
+初回起動で、何を変えるかを案内し、アプリ内ターミナルでヘルパーを
+実行し、メニューバーの使い方を示します。メニューの **使い方…** から
+再表示できます。
 
 メニューバーに置いたまま使います。バッグに入れる前にオフにしてください。
 **ログイン時に開く** は

@@ -1,6 +1,6 @@
 #!/bin/zsh
-# Install DontSleep: copy the app, clear Gatekeeper quarantine on that
-# copy, write the two-line sudoers helper, and open the app.
+# Put DontSleep in Applications, clear Gatekeeper quarantine on that
+# copy, and open it. The first-launch window writes sudoers.
 #
 #   curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 #   zsh install.sh /path/to/DontSleep-*.dmg
@@ -39,7 +39,8 @@ Install DontSleep into /Applications and open it.
   curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
   zsh install.sh [DontSleep.dmg|DontSleep.app]
 
-macOS asks for your password once. That allows only:
+The app window then writes /etc/sudoers.d/dontsleep. Press Enter
+there; macOS asks for your password once. That allows only:
 
   pmset -a disablesleep 1
   pmset -a disablesleep 0
@@ -54,16 +55,6 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
 fi
 
 work="$(/usr/bin/mktemp -d /tmp/dontsleep-install.XXXXXX)"
-
-current_sleep_flag() {
-  local flag
-  flag="$(/usr/bin/pmset -g 2>/dev/null | /usr/bin/awk '/SleepDisabled/{print $2; exit}')"
-  print -- "${flag:-0}"
-}
-
-helper_ok() {
-  /usr/bin/sudo -n /usr/bin/pmset -a disablesleep "$(current_sleep_flag)" >/dev/null 2>&1
-}
 
 fetch_latest_dmg() {
   local api url
@@ -118,69 +109,11 @@ copy_app() {
     || die "could not copy the app to Applications."
 }
 
-clear_quarantine() {
-  /usr/bin/xattr -dr com.apple.quarantine "$dest" >/dev/null 2>&1 || true
-}
-
-install_helper() {
-  local user writer
-  if helper_ok; then
-    return 0
-  fi
-  user="$(/usr/bin/id -un)"
-  writer="$(/usr/bin/mktemp /tmp/dontsleep-write-sudoers.XXXXXX)"
-  cat >"$writer" <<'EOS'
-#!/bin/zsh
-set -euo pipefail
-user="${1:?user}"
-rule="${user} ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 1, /usr/bin/pmset -a disablesleep 0"
-tmp="$(/usr/bin/mktemp /tmp/dontsleep-sudoers.XXXXXX)"
-printf '%s\n' "$rule" > "$tmp"
-/usr/sbin/visudo -cf "$tmp"
-/usr/bin/install -m 0440 -o root -g wheel "$tmp" /etc/sudoers.d/dontsleep
-/usr/sbin/visudo -cf /etc/sudoers.d/dontsleep
-/bin/rm -f "$tmp"
-EOS
-  /bin/chmod 700 "$writer"
-  /usr/bin/osascript -e \
-    "do shell script (quoted form of \"$writer\") & \" \" & (quoted form of \"$user\") with administrator privileges" \
-    || { /bin/rm -f "$writer"; die "password cancelled, or the helper could not be written."; }
-  /bin/rm -f "$writer"
-  helper_ok || die "helper is in place but sudo still asks for a password."
-}
-
-write_login_item() {
-  local dir plist
-  dir="${HOME}/Library/LaunchAgents"
-  plist="${dir}/com.innocarpe.dontsleep.plist"
-  /bin/mkdir -p "$dir"
-  cat >"$plist" <<'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>Label</key>
-	<string>com.innocarpe.dontsleep</string>
-	<key>ProgramArguments</key>
-	<array>
-		<string>/Applications/DontSleep.app/Contents/MacOS/DontSleep</string>
-	</array>
-	<key>RunAtLoad</key>
-	<true/>
-	<key>KeepAlive</key>
-	<false/>
-</dict>
-</plist>
-EOF
-}
-
 resolve_source "$@"
 copy_app
-clear_quarantine
-install_helper
-write_login_item
+/usr/bin/xattr -dr com.apple.quarantine "$dest" >/dev/null 2>&1 || true
 /usr/bin/open "$dest"
 
 print "DontSleep is in Applications and in the menu bar."
-print "Toggle: click the laptop icon. Off before you bag the Mac."
+print "Finish setup in the window: press Enter, then the Mac password once."
 print "Remove helper later: sudo rm /etc/sudoers.d/dontsleep"

@@ -14,6 +14,8 @@ mkdir -p "$macos" "$res"
 cp "${root}/Info.plist" "${stage}/Contents/Info.plist"
 cp "${root}/Assets/AppIcon.icns" "${res}/AppIcon.icns"
 cp "${root}/Assets/MenubarOn.pdf" "${root}/Assets/MenubarOff.pdf" "${root}/Assets/MenubarError.pdf" "$res"
+cp "${root}/scripts/write-sudoers.sh" "${res}/write-sudoers.sh"
+/bin/chmod 755 "${res}/write-sudoers.sh"
 
 for lang in en ko zh-Hans ja; do
   mkdir -p "${res}/${lang}.lproj"

@@ -22,8 +22,9 @@ In Terminal:
 
   curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 
-That copies the app, clears quarantine on that copy, asks for your
-password once (two pmset lines, your account only), and opens DontSleep.
+That copies the app, clears quarantine on that copy, and opens
+DontSleep. Finish setup in the first window: press Enter, then your
+Mac password once (two pmset lines, your account only).
 
 If this disk image is already on disk:
 

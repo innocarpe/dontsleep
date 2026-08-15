@@ -1,17 +1,28 @@
 import Foundation
 
 enum Sudoers {
+    static let shortCommand = "sudo write-sudoers.sh"
+
+    static var helperURL: URL? {
+        Bundle.main.url(forResource: "write-sudoers", withExtension: "sh")
+    }
+
+    /// Command a user can paste into Terminal.app. Same helper the app runs.
+    static var shellCommand: String {
+        let path = helperURL?.path
+            ?? "\(Bundle.main.bundlePath)/Contents/Resources/write-sudoers.sh"
+        return "sudo \(quote(path)) \(NSUserName())"
+    }
+
     /// Writes /etc/sudoers.d/dontsleep for the current user via a one-time
     /// administrator password dialog. Does not change the current sleep flag.
     static func install() throws {
+        guard let helper = helperURL else {
+            throw PowerError.sudoersMissing
+        }
         let user = NSUserName()
-        let rule = "\(user) ALL=(root) NOPASSWD: /usr/bin/pmset -a disablesleep 1, /usr/bin/pmset -a disablesleep 0"
-        let tmp = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent("dontsleep-sudoers-\(UUID().uuidString)")
-        try (rule + "\n").write(to: tmp, atomically: true, encoding: .utf8)
-
         let script = """
-        do shell script "install -m 0440 -o root -g wheel " & quoted form of "\(tmp.path)" & " /etc/sudoers.d/dontsleep && /usr/sbin/visudo -cf /etc/sudoers.d/dontsleep" with administrator privileges
+        do shell script (quoted form of "\(helper.path)") & " " & (quoted form of "\(user)") with administrator privileges
         """
         let proc = Process()
         proc.executableURL = URL(fileURLWithPath: "/usr/bin/osascript")
@@ -21,12 +32,15 @@ enum Sudoers {
         proc.standardOutput = FileHandle.nullDevice
         try proc.run()
         proc.waitUntilExit()
-        try? FileManager.default.removeItem(at: tmp)
         if proc.terminationStatus != 0 {
             throw PowerError.sudoersMissing
         }
         if !Power.hasPasswordlessAccess() {
             throw PowerError.sudoersMissing
         }
+    }
+
+    private static func quote(_ path: String) -> String {
+        "'" + path.replacingOccurrences(of: "'", with: "'\\''") + "'"
     }
 }

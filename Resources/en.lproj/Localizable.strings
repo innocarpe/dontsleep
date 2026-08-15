@@ -21,14 +21,14 @@
 "error.spawn" = "Could not start %@";
 "error.command" = "%@ exited with status %d";
 "error.commandDetail" = "%@ exited with status %d — %@";
-"error.sudoers" = "DontSleep still cannot change closed-lid sleep. Enter the administrator password when asked, or run the installer again.";
+"error.sudoers" = "DontSleep still cannot change closed-lid sleep. Press Enter in the setup window and approve the password prompt.";
 "error.verify" = "pmset did not report the value that was just set.";
 
 "onboard.progress" = "Step %d of %d";
 "onboard.continue" = "Continue";
 "onboard.back" = "Back";
 "onboard.later" = "Later";
-"onboard.allow" = "Enter password…";
+"onboard.allow" = "Run";
 "onboard.done" = "Done";
 
 "onboard.welcome.title" = "Welcome to DontSleep";
@@ -36,11 +36,15 @@
 "onboard.welcome.body2" = "This is not the same as preventing idle sleep. Tools like caffeinate only keep the Mac awake while the lid is already open.";
 
 "onboard.permission.title" = "Allow closed-lid control";
-"onboard.permission.why" = "macOS treats closed-lid sleep as a system setting. Changing it requires an administrator password, once.";
-"onboard.permission.what" = "DontSleep will add a rule for your user account only. The rule allows exactly these two commands:";
+"onboard.permission.why" = "Closed-lid sleep is a system setting. Run the command below in this window — you do not need Terminal.app.";
+"onboard.permission.what" = "Your account only; pmset -a disablesleep 1 and 0 only. macOS asks for a password once (Touch ID works).";
 "onboard.permission.cmdOn" = "pmset -a disablesleep 1   stay awake with the lid closed";
 "onboard.permission.cmdOff" = "pmset -a disablesleep 0   sleep when the lid closes";
-"onboard.permission.scope" = "Nothing else in sudo is unlocked. You can remove the rule later with sudo rm /etc/sudoers.d/dontsleep.";
+"onboard.permission.scope" = "Nothing else in sudo is unlocked. Remove later with sudo rm /etc/sudoers.d/dontsleep.";
+"onboard.permission.hint" = "Press Enter to run the command.";
+"onboard.permission.copy" = "Copy";
+"onboard.permission.copied" = "Copied";
+"onboard.permission.success" = "wrote /etc/sudoers.d/dontsleep";
 
 "onboard.usage.title" = "How to use it";
 "onboard.usage.on" = "Filled laptop: DontSleep is on. The Mac stays awake with the lid closed.";

@@ -19,7 +19,7 @@ final class OnboardingController: NSObject {
     private var lastContentSize: NSSize = .zero
     var onFinish: (() -> Void)?
 
-    static let contentWidth: CGFloat = 460
+    static let contentWidth: CGFloat = 480
 
     func present(kind: OnboardingModel.Kind, needsHelper: Bool) {
         if window != nil {
@@ -63,17 +63,27 @@ final class OnboardingController: NSObject {
     }
 
     private func installHelper(model: OnboardingModel) {
-        do {
-            try Sudoers.install()
-            model.helperReady = true
-            model.helperError = nil
-            if !LoginItem.isEnabled {
-                LoginItem.setEnabled(true)
-                model.startAtLogin = true
+        guard !model.busy, !model.helperReady else { return }
+        model.busy = true
+        model.helperError = nil
+        model.consoleOutput = ""
+        model.onNeedsRefit?()
+        DispatchQueue.main.async {
+            do {
+                try Sudoers.install()
+                model.helperReady = true
+                model.helperError = nil
+                model.consoleOutput = L10n.string("onboard.permission.success")
+                if !LoginItem.isEnabled {
+                    LoginItem.setEnabled(true)
+                    model.startAtLogin = true
+                }
+            } catch {
+                model.helperError = error.localizedDescription
+                model.consoleOutput = error.localizedDescription
             }
-            model.goForward()
-        } catch {
-            model.helperError = error.localizedDescription
+            model.busy = false
+            model.onNeedsRefit?()
         }
     }
 
@@ -135,6 +145,7 @@ final class OnboardingModel: ObservableObject {
     @Published var helperError: String?
     @Published var startAtLogin: Bool
     @Published var busy = false
+    @Published var consoleOutput = ""
 
     var onRequestHelper: (() -> Void)?
     var onClose: (() -> Void)?
@@ -234,6 +245,8 @@ struct OnboardingView: View {
         .fixedSize(horizontal: true, vertical: true)
         .onChange(of: model.step) { _, _ in model.onNeedsRefit?() }
         .onChange(of: model.helperError) { _, _ in model.onNeedsRefit?() }
+        .onChange(of: model.consoleOutput) { _, _ in model.onNeedsRefit?() }
+        .onChange(of: model.busy) { _, _ in model.onNeedsRefit?() }
         .onAppear { model.onNeedsRefit?() }
     }
 
@@ -281,22 +294,18 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text(L10n.string("onboard.permission.why"))
                 Text(L10n.string("onboard.permission.what"))
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(L10n.string("onboard.permission.cmdOn"))
-                    Text(L10n.string("onboard.permission.cmdOff"))
-                }
-                .font(.system(.caption, design: .monospaced))
-                .padding(10)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(nsColor: .textBackgroundColor))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                Text(L10n.string("onboard.permission.scope"))
                     .foregroundStyle(.secondary)
-                if let err = model.helperError {
-                    Text(err)
-                        .foregroundStyle(.red)
-                        .font(.callout)
-                }
+                EmbeddedCommandConsole(
+                    command: Sudoers.shortCommand,
+                    copyCommand: Sudoers.shellCommand,
+                    output: model.consoleOutput,
+                    isBusy: model.busy,
+                    isDone: model.helperReady,
+                    onRun: { model.onRequestHelper?() }
+                )
+                Text(L10n.string("onboard.permission.scope"))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
             .fixedSize(horizontal: false, vertical: true)
         case .usage:
@@ -334,16 +343,18 @@ struct OnboardingView: View {
 
     private var footer: some View {
         HStack {
-            if model.step != .welcome {
+            if model.step != model.visibleSteps.first {
                 Button(L10n.string("onboard.back")) { model.goBack() }
                     .keyboardShortcut(.cancelAction)
             }
             Spacer()
             if model.step == .permission && !model.helperReady {
                 Button(L10n.string("onboard.later")) { model.goForward() }
+                    .disabled(model.busy)
                 Button(L10n.string("onboard.allow")) { model.onRequestHelper?() }
                     .keyboardShortcut(.defaultAction)
                     .buttonStyle(.borderedProminent)
+                    .disabled(model.busy)
             } else {
                 Button(model.isLast ? L10n.string("onboard.done") : L10n.string("onboard.continue")) {
                     if model.isLast {

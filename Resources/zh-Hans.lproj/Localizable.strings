@@ -21,14 +21,14 @@
 "error.spawn" = "无法启动 %@";
 "error.command" = "%@ 退出，状态码 %d";
 "error.commandDetail" = "%@ 退出，状态码 %d — %@";
-"error.sudoers" = "仍无法更改合盖休眠。请在提示时输入管理员密码，或重新运行安装程序。";
+"error.sudoers" = "仍无法更改合盖休眠。请在设置窗口中按 Enter，并批准密码提示。";
 "error.verify" = "已更改设置，但 pmset 未报告对应状态。";
 
 "onboard.progress" = "第 %d 步，共 %d 步";
 "onboard.continue" = "继续";
 "onboard.back" = "返回";
 "onboard.later" = "稍后";
-"onboard.allow" = "输入密码…";
+"onboard.allow" = "运行";
 "onboard.done" = "完成";
 
 "onboard.welcome.title" = "欢迎使用 DontSleep";
@@ -36,11 +36,15 @@
 "onboard.welcome.body2" = "这和“防止空闲休眠”不同。caffeinate 一类工具只在盖子已经打开时阻止休眠。";
 
 "onboard.permission.title" = "允许控制合盖休眠";
-"onboard.permission.why" = "合盖休眠是系统设置。更改它需要一次管理员密码。";
-"onboard.permission.what" = "DontSleep 只会为当前账户添加规则，并且只允许这两条命令：";
+"onboard.permission.why" = "合盖休眠是系统设置。请在此窗口运行下面的命令，无需打开“终端”。";
+"onboard.permission.what" = "仅当前账户，且只允许 pmset -a disablesleep 1 和 0。密码只问一次（支持 Touch ID）。";
 "onboard.permission.cmdOn" = "pmset -a disablesleep 1   合盖后保持唤醒";
 "onboard.permission.cmdOff" = "pmset -a disablesleep 0   合盖后休眠";
 "onboard.permission.scope" = "不会开放其他 sudo。以后可用 sudo rm /etc/sudoers.d/dontsleep 删除。";
+"onboard.permission.hint" = "按 Enter 运行命令。";
+"onboard.permission.copy" = "复制";
+"onboard.permission.copied" = "已复制";
+"onboard.permission.success" = "wrote /etc/sudoers.d/dontsleep";
 
 "onboard.usage.title" = "怎么用";
 "onboard.usage.on" = "实心笔记本：已开启。合盖后仍保持唤醒。";

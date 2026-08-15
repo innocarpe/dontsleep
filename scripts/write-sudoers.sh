@@ -10,3 +10,4 @@ printf '%s\n' "$rule" > "$tmp"
 /usr/bin/install -m 0440 -o root -g wheel "$tmp" /etc/sudoers.d/dontsleep
 /usr/sbin/visudo -cf /etc/sudoers.d/dontsleep
 /bin/rm -f "$tmp"
+print "wrote /etc/sudoers.d/dontsleep"

@@ -57,22 +57,23 @@ macOS 언어를 따르며, 기본은 영어이고 한국어·중국어 간체·�
 실행하는 앱을 보므로, 디스크 이미지에서 quarantine을 지워도 소용이
 없습니다. 앱을 받아서 더블클릭하지 마세요.
 
-다음 한 줄이 앱을 복사하고, 그 복사본의 quarantine을 지우고, helper를
-쓴 뒤 DontSleep을 엽니다.
+다음 한 줄이 앱을 복사하고, 그 복사본의 quarantine을 지운 뒤
+DontSleep을 엽니다.
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 ```
 
-맥 비밀번호를 한 번 묻습니다. **지금 계정에만**
-`/etc/sudoers.d/dontsleep` 를 쓰며, 허용하는 명령은 다음뿐입니다.
+첫 창에 작은 터미널이 있습니다. Enter를 누르면 macOS가 비밀번호를
+한 번 묻고, **지금 계정에만** `/etc/sudoers.d/dontsleep` 를 씁니다.
+허용하는 명령은 다음뿐입니다.
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-`sudo` 전체를 열지 않습니다. 메뉴바에 노트북 아이콘이 생깁니다.
+`sudo` 전체를 열지 않습니다. 이 단계는 별도의 터미널 앱이 필요 없습니다.
 
 파이프가 불편하면 먼저 [install.sh](install.sh) 를 읽으면 됩니다.
 디스크 이미지가 이미 있으면: `zsh install.sh ~/Downloads/DontSleep-*.dmg`.
@@ -84,16 +85,17 @@ pmset -a disablesleep 0
 ```sh
 git clone https://github.com/innocarpe/dontsleep.git
 cd dontsleep
-./scripts/install-sudoers.sh
 ./build.sh
 ```
 
-`build.sh` 는 `/Applications/DontSleep.app` 에 설치합니다.
+`build.sh` 는 `/Applications/DontSleep.app` 에 설치합니다. helper는
+첫 창에서 끝냅니다. 셸에서 하려면 `./scripts/install-sudoers.sh`.
 
 ## 사용
 
-첫 실행에서 무엇을 바꾸는지, 왜 비밀번호가 필요한지, 메뉴바를 어떻게
-쓰는지를 안내합니다. 메뉴의 **사용 방법…** 에서 다시 볼 수 있습니다.
+첫 실행에서 무엇을 바꾸는지 안내하고, 앱 안 터미널에서 helper를
+실행한 뒤, 메뉴바 쓰는 법을 보여 줍니다. 메뉴의 **사용 방법…** 에서
+다시 볼 수 있습니다.
 
 메뉴바에 두고 씁니다. 가방에 넣을 때는 끄세요. **로그인할 때 시작** 은
 `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist` 를 씁니다.

@@ -119,6 +119,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             self.didRender = false
             self.refresh()
         }
+        if CommandLine.arguments.contains("--show-permission") {
+            onboarding.present(kind: .permission, needsHelper: true)
+            return
+        }
         if !OnboardingController.isCompleted {
             presentOnboarding(kind: .firstLaunch)
         } else if !helperReady {

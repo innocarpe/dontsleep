@@ -58,22 +58,24 @@ opening a downloaded copy from Finder shows **Move to Trash** only — no
 Open button. Gatekeeper checks the app you launch, so clearing quarantine
 on a disk image does not help. Do not download and double-click the app.
 
-One command copies the app, clears quarantine on that copy, writes the
-helper, and opens DontSleep:
+One command copies the app, clears quarantine on that copy, and opens
+DontSleep:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 ```
 
-macOS asks for your password once. That writes
-`/etc/sudoers.d/dontsleep` for **your account only**, limited to:
+The first window has a small terminal. Press Enter. macOS asks for your
+password once and writes `/etc/sudoers.d/dontsleep` for **your account
+only**, limited to:
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-It does not unlock all of `sudo`. A laptop icon appears in the menu bar.
+It does not unlock all of `sudo`. You do not need Terminal.app for that
+step.
 
 Read [install.sh](install.sh) first if you prefer not to pipe to a shell.
 If you already have the disk image: `zsh install.sh ~/Downloads/DontSleep-*.dmg`.
@@ -85,17 +87,18 @@ To remove the helper later: `sudo rm /etc/sudoers.d/dontsleep`.
 ```sh
 git clone https://github.com/innocarpe/dontsleep.git
 cd dontsleep
-./scripts/install-sudoers.sh
 ./build.sh
 ```
 
-`build.sh` installs to `/Applications/DontSleep.app`.
+`build.sh` installs to `/Applications/DontSleep.app`. Finish setup in
+the first window. `./scripts/install-sudoers.sh` does the same helper
+from a shell if you want.
 
 ## Usage
 
-The first launch walks through what DontSleep changes, why a password is
-asked, and how the menu bar works. Open **How to Use…** from the menu to
-see that again.
+The first launch walks through what DontSleep changes, runs the helper
+in an in-app terminal, and shows how the menu bar works. Open
+**How to Use…** from the menu to see that again.
 
 Leave it in the menu bar. Turn it off when you want the laptop to sleep in
 a bag. **Start at Login** writes `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`.

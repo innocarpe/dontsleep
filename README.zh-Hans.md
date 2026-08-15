@@ -56,22 +56,21 @@ Finder 打开下载的副本只会弹出 **移到废纸篓**。Gatekeeper 检查
 你启动的那个应用，所以清除磁盘映像上的隔离属性没有用。不要下载后
 双击应用。
 
-下面这一条命令会复制应用、清除该副本的隔离属性、写入辅助规则，
-并打开 DontSleep：
+下面这一条命令会复制应用、清除该副本的隔离属性，并打开 DontSleep：
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 ```
 
-macOS 会询问一次密码。它只为**当前账户**写入
-`/etc/sudoers.d/dontsleep`，且只允许：
+第一个窗口里有一个小终端。按 Enter 后，macOS 会询问一次密码，并只为
+**当前账户**写入 `/etc/sudoers.d/dontsleep`，且只允许：
 
 ```
 pmset -a disablesleep 1
 pmset -a disablesleep 0
 ```
 
-不会开放全部 `sudo`。菜单栏会出现笔记本图标。
+不会开放全部 `sudo`。这一步不需要打开“终端”应用。
 
 若不希望把脚本直接交给 shell，请先阅读 [install.sh](install.sh)。
 若磁盘映像已在本地：`zsh install.sh ~/Downloads/DontSleep-*.dmg`。
@@ -83,16 +82,16 @@ pmset -a disablesleep 0
 ```sh
 git clone https://github.com/innocarpe/dontsleep.git
 cd dontsleep
-./scripts/install-sudoers.sh
 ./build.sh
 ```
 
-`build.sh` 会安装到 `/Applications/DontSleep.app`。
+`build.sh` 会安装到 `/Applications/DontSleep.app`。请在首个窗口完成
+辅助规则。若想在 shell 里写：`./scripts/install-sudoers.sh`。
 
 ## 使用
 
-首次启动会说明会改什么、为什么要密码、以及菜单栏怎么用。可在菜单中
-打开 **使用方法…** 再次查看。
+首次启动会说明会改什么，在应用内终端运行辅助命令，并介绍菜单栏。
+可在菜单中打开 **使用方法…** 再次查看。
 
 留在菜单栏即可。放进包里之前请先关闭。**登录时启动** 会写入
 `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`。
