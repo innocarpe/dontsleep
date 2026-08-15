@@ -14,9 +14,12 @@ final class OnboardingController: NSObject {
     }
 
     private var window: NSWindow?
+    private var host: NSHostingController<OnboardingView>?
     private var model: OnboardingModel?
     private var lastContentSize: NSSize = .zero
     var onFinish: (() -> Void)?
+
+    static let contentWidth: CGFloat = 460
 
     func present(kind: OnboardingModel.Kind, needsHelper: Bool) {
         if window != nil {
@@ -32,19 +35,20 @@ final class OnboardingController: NSObject {
         model.onClose = { [weak self] in
             self?.close()
         }
-        model.onSizeChange = { [weak self] size in
-            self?.resize(to: size)
+        model.onNeedsRefit = { [weak self] in
+            DispatchQueue.main.async { self?.refit() }
         }
         self.model = model
 
         let host = NSHostingController(rootView: OnboardingView(model: model))
         if #available(macOS 13.0, *) {
-            host.sizingOptions = []
+            host.sizingOptions = [.intrinsicContentSize]
         }
+        self.host = host
         let window = NSWindow(contentViewController: host)
         window.title = AppIdentity.name
         window.styleMask = [.titled, .closable]
-        window.setContentSize(NSSize(width: 440, height: 280))
+        window.setContentSize(NSSize(width: Self.contentWidth, height: 320))
         window.center()
         window.isReleasedWhenClosed = false
         window.delegate = self
@@ -53,6 +57,9 @@ final class OnboardingController: NSObject {
         NSApp.setActivationPolicy(.regular)
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.refit()
+        }
     }
 
     private func installHelper(model: OnboardingModel) {
@@ -70,20 +77,25 @@ final class OnboardingController: NSObject {
         }
     }
 
-    private func resize(to size: CGSize) {
-        guard let window, size.width > 0, size.height > 0 else { return }
-        let rounded = NSSize(width: ceil(size.width), height: ceil(size.height))
-        if abs(rounded.width - lastContentSize.width) < 1,
-           abs(rounded.height - lastContentSize.height) < 1 {
+    private func refit() {
+        guard let window, let host else { return }
+        let proposal = NSSize(width: Self.contentWidth, height: 4000)
+        let fit = host.sizeThatFits(in: proposal)
+        let size = NSSize(
+            width: Self.contentWidth,
+            height: max(200, ceil(fit.height) + 20)
+        )
+        if abs(size.height - lastContentSize.height) < 1,
+           abs(size.width - lastContentSize.width) < 1 {
             return
         }
-        lastContentSize = rounded
+        lastContentSize = size
         let old = window.frame
-        window.setContentSize(rounded)
+        window.setContentSize(size)
         var frame = window.frame
         frame.origin.x = old.midX - frame.width / 2
         frame.origin.y = old.midY - frame.height / 2
-        window.setFrame(frame, display: true, animate: true)
+        window.setFrame(frame, display: true, animate: false)
     }
 
     private func close() {
@@ -91,6 +103,7 @@ final class OnboardingController: NSObject {
         LoginItem.setEnabled(model?.startAtLogin ?? LoginItem.isEnabled)
         window?.orderOut(nil)
         window = nil
+        host = nil
         model = nil
         NSApp.setActivationPolicy(.accessory)
         onFinish?()
@@ -102,6 +115,7 @@ extension OnboardingController: NSWindowDelegate {
         OnboardingController.markCompleted()
         NSApp.setActivationPolicy(.accessory)
         window = nil
+        host = nil
         model = nil
         onFinish?()
     }
@@ -123,7 +137,7 @@ final class OnboardingModel: ObservableObject {
 
     var onRequestHelper: (() -> Void)?
     var onClose: (() -> Void)?
-    var onSizeChange: ((CGSize) -> Void)?
+    var onNeedsRefit: (() -> Void)?
 
     enum Kind {
         case firstLaunch
@@ -215,14 +229,11 @@ struct OnboardingView: View {
             Divider()
             footer
         }
-        .frame(width: 440)
+        .frame(width: OnboardingController.contentWidth)
         .fixedSize(horizontal: true, vertical: true)
-        .background(
-            GeometryReader { proxy in
-                Color.clear.preference(key: OnboardingSizeKey.self, value: proxy.size)
-            }
-        )
-        .onPreferenceChange(OnboardingSizeKey.self) { model.onSizeChange?($0) }
+        .onChange(of: model.step) { _, _ in model.onNeedsRefit?() }
+        .onChange(of: model.helperError) { _, _ in model.onNeedsRefit?() }
+        .onAppear { model.onNeedsRefit?() }
     }
 
     private var header: some View {
@@ -346,12 +357,5 @@ struct OnboardingView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
-    }
-}
-
-private struct OnboardingSizeKey: PreferenceKey {
-    static var defaultValue: CGSize = .zero
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
-        value = nextValue()
     }
 }
