@@ -57,6 +57,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         loginMenuItem = item(L10n.string("menu.startAtLogin"), action: #selector(toggleLogin), key: "")
         menu.addItem(loginMenuItem)
         heatItem = item(L10n.string("menu.releaseOnHeat"), action: #selector(toggleHeat), key: "")
+        heatItem.toolTip = L10n.string("menu.releaseOnHeat.tip")
         menu.addItem(heatItem)
         setupItem = item(L10n.string("menu.installHelper"), action: #selector(installHelper), key: "")
         menu.addItem(setupItem)
@@ -124,8 +125,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         loginMenuItem.state = LoginItem.isEnabled ? .on : .off
     }
     @objc private func toggleHeat(_ sender: NSMenuItem) {
-        clamshell.releaseOnHeat.toggle()
+        if clamshell.releaseOnHeat {
+            clamshell.releaseOnHeat = false
+        } else if confirmHeatOption() {
+            clamshell.releaseOnHeat = true
+        }
         heatItem.state = clamshell.releaseOnHeat ? .on : .off
+    }
+
+    private func confirmHeatOption() -> Bool {
+        let alert = NSAlert()
+        alert.alertStyle = .informational
+        alert.messageText = L10n.string("menu.releaseOnHeat")
+        alert.informativeText = L10n.string("menu.releaseOnHeat.confirm")
+        alert.addButton(withTitle: L10n.string("menu.releaseOnHeat.confirmOn"))
+        alert.addButton(withTitle: L10n.string("menu.cancel"))
+        return alert.runModal() == .alertFirstButtonReturn
     }
     @objc private func installHelper() { presentOnboarding(kind: .permission) }
     @objc private func showHowTo() { presentOnboarding(kind: .howTo) }
