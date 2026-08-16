@@ -8,79 +8,50 @@
 
 **Close the lid. Work keeps going. The screen and keyboard go dark.**
 
-DontSleep is a macOS menu bar app. Turn it on, close the lid as-is —
-no dimming first. The Mac stays awake. The built-in screen and keyboard
-backlight turn off like clamshell, then come back as they were when you
-open it. Click the icon to switch; right-click for the menu.
+A lot of people run `pmset disablesleep` so a closed MacBook stays awake.
+That works — and it leaves the built-in screen on inside a shut lid. The
+panel keeps making heat in a box that cannot vent well.
+
+DontSleep does the same stay-awake switch from the menu bar, then turns
+off what you do not need once the lid is down: the built-in screen and
+the keyboard light. Open it again and both come back as they were. You
+do not dim first.
+
+That is the point of the app. Not a prettier `pmset`. Less leftover heat
+while the machine keeps working — commute, a meeting room, a long job
+you do not want to stop.
+
+Click the icon to turn it on or off. Right-click for the rest. Filled
+laptop means on. Outline means off.
 
 <p align="center">
   <img src="docs/assets/app-icon-rounded.png" alt="DontSleep app icon: a Space Black MacBook with the lid slightly open and a warm glow from the keyboard" width="220" />
 </p>
 
+`caffeinate` and KeepingYouAwake only stop idle sleep. They do not stop
+a closed lid. This does. It is not signed with an Apple Developer ID.
+
+Off before the bag. The machine is still awake in there.
+
 ---
-
-## Why this exists
-
-`caffeinate` and apps like KeepingYouAwake stop **idle** sleep. They do not
-stop **closed-lid** sleep. The only supported switch for that is
-`pmset disablesleep`, which needs root.
-
-DontSleep is that switch, in the menu bar. Sleep-disable alone would
-leave the built-in panel on. Closing the lid also blanks the screen and
-keyboard light, then restores the levels you were using.
-
-## Who it’s for
-
-Useful if you:
-
-- Close the lid and keep work running (commute, meeting room, a long agent job)
-- Want the current state visible in the menu bar, not only in a terminal
-- Do not want a password prompt every time you flip the setting
-
-Not an idle-sleep app. Not signed with an Apple Developer ID
-(see [Install](#install)).
-
-## What it does
-
-| Action | Result |
-| --- | --- |
-| Left-click | Toggle on / off |
-| Right-click | Menu |
-| Filled laptop icon | On — lid closed, stays awake; screen and keyboard go dark |
-| Outline laptop icon | Off — sleeps when the lid closes |
-
-Menu bar icons follow light and dark. Language follows macOS: English,
-Korean, Simplified Chinese, Japanese.
 
 ## Install
 
-The release is **ad-hoc signed, not notarized**. On current macOS (Tahoe),
-opening a downloaded copy from Finder shows **Move to Trash** only — no
-Open button. Gatekeeper checks the app you launch, so clearing quarantine
-on a disk image does not help. Do not download and double-click the app.
-
-One command copies the app, clears quarantine on that copy, and opens
-DontSleep:
+The release is ad-hoc signed, not notarized. On Tahoe, a downloaded copy
+only offers **Move to Trash**. Do not double-click it.
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/innocarpe/dontsleep/main/install.sh | zsh
 ```
 
-The first window has a small terminal. Press Enter. macOS asks for your
-password once and writes `/etc/sudoers.d/dontsleep` for **your account
-only**, limited to:
-
-```
-pmset -a disablesleep 1
-pmset -a disablesleep 0
-```
-
+The first window asks for your password once. That writes
+`/etc/sudoers.d/dontsleep` for your account, two `pmset` lines only.
 It does not unlock all of `sudo`.
 
-Read [install.sh](install.sh) first if you prefer not to pipe to a shell.
-If you already have the disk image: `zsh install.sh ~/Downloads/DontSleep-*.dmg`.
+Read [install.sh](install.sh) first if you prefer. Already have the
+disk image: `zsh install.sh ~/Downloads/DontSleep-*.dmg`.
 
-To remove the helper later: `sudo rm /etc/sudoers.d/dontsleep`.
+Remove the helper later: `sudo rm /etc/sudoers.d/dontsleep`.
 
 ### From source
 
@@ -90,32 +61,30 @@ cd dontsleep
 ./build.sh
 ```
 
-`build.sh` installs to `/Applications/DontSleep.app`. Finish setup in
-the first window. `./scripts/install-sudoers.sh` does the same helper
-from a shell if you want.
+Finish setup in the first window. Or `./scripts/install-sudoers.sh`.
 
 ## Usage
 
-First launch is the setup. **How to Use…** in the menu opens it again.
+First launch is setup. **How to Use…** in the menu opens it again.
 
 Leave it in the menu bar. Close the lid at whatever brightness you were
-using. Off before the bag. **Open at Login** writes
+using. **Open at Login** writes
 `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`.
 
-**Sleep on Overheat Warning** is off unless you turn it on. If macOS
+**Sleep on Overheat Warning** is off unless you turn it on. If the Mac
 sends an overheat warning with the lid closed, DontSleep turns off and
-the Mac sleeps immediately.
+the machine sleeps immediately.
 
 Watch the battery.
 
 ## Building
 
-Requires Xcode Command Line Tools (Swift + `hdiutil`).
+Xcode Command Line Tools (Swift + `hdiutil`).
 
 ```sh
 ./scripts/build-app.sh            # dist/DontSleep.app
 ./scripts/package-dmg.sh          # DontSleep-<version>.dmg
-./scripts/make-icons.sh           # rebuild icns / menu-bar PDFs
+./scripts/make-icons.sh           # icns / menu-bar PDFs
 ```
 
 ## License
