@@ -23,6 +23,11 @@ func writePDF(kind: Kind) {
         exit(1)
     }
     ctx.beginPDFPage(nil)
+    // 18pt slot is Apple's. The laptop is wide and hollow, so it reads
+    // smaller than filled neighbors. Scale the glyph, not the slot.
+    ctx.translateBy(x: 9, y: 9)
+    ctx.scaleBy(x: 1.12, y: 1.12)
+    ctx.translateBy(x: -9, y: -9)
     ctx.setFillColor(gray: 0, alpha: 1)
     ctx.setStrokeColor(gray: 0, alpha: 1)
     ctx.setLineWidth(lineWidth)
