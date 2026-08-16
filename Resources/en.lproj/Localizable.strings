@@ -1,9 +1,9 @@
 "menu.turnOn" = "Turn On";
 "menu.turnOff" = "Turn Off";
 "menu.startAtLogin" = "Open at Login";
-"menu.releaseOnHeat" = "Off When Hot";
-"menu.releaseOnHeat.tip" = "If the Mac gets hot while the lid is closed, DontSleep turns off and the machine sleeps.";
-"menu.releaseOnHeat.confirm" = "You use this with the lid closed. If the Mac gets hot, DontSleep turns off and the machine sleeps right then.";
+"menu.releaseOnHeat" = "Sleep on Heat Warning";
+"menu.releaseOnHeat.tip" = "Uses macOS's own heat warning — the one before it throttles or shuts down. DontSleep then turns off and the Mac sleeps.";
+"menu.releaseOnHeat.confirm" = "This is not a temperature we pick. When macOS posts a heat warning (before it slows the machine or shuts down), DontSleep turns off. If the lid is already closed, the Mac sleeps immediately.";
 "menu.releaseOnHeat.confirmOn" = "Turn On";
 "menu.cancel" = "Cancel";
 "menu.installHelper" = "Allow Lid Control…";

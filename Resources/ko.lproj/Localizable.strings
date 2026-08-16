@@ -1,9 +1,9 @@
 "menu.turnOn" = "켜기";
 "menu.turnOff" = "끄기";
 "menu.startAtLogin" = "로그인 시 열기";
-"menu.releaseOnHeat" = "뜨거우면 끄기";
-"menu.releaseOnHeat.tip" = "덮개를 닫아 둔 채로 뜨거워지면 DontSleep이 꺼지고 맥이 바로 잠듭니다.";
-"menu.releaseOnHeat.confirm" = "덮개를 닫아 쓰다가 맥이 뜨거워지면 DontSleep이 꺼지고, 바로 잠듭니다.";
+"menu.releaseOnHeat" = "열 경고 시 잠자기";
+"menu.releaseOnHeat.tip" = "macOS가 열 경고를 올리면(성능 저하·종료 직전) DontSleep이 꺼지고 바로 잠듭니다.";
+"menu.releaseOnHeat.confirm" = "우리가 온도를 정하지 않습니다. 맥이 자체 열 경고를 올릴 때입니다. 시스템이 성능을 낮추거나 끄기 전에 내는 그 신호입니다. 덮개를 닫아 둔 상태면 DontSleep이 꺼지고 바로 잠듭니다.";
 "menu.releaseOnHeat.confirmOn" = "켜기";
 "menu.cancel" = "취소";
 "menu.installHelper" = "덮개 제어 허용…";
