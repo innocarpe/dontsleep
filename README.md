@@ -6,11 +6,12 @@
 [![macOS](https://img.shields.io/badge/macOS-14%2B-000000?style=flat)](#install)
 [![Arch](https://img.shields.io/badge/arch-Apple%20silicon-lightgrey?style=flat)](#building)
 
-**Keep the Mac awake with the lid closed.**
+**Close the lid. Work keeps going. The screen and keyboard go dark.**
 
-DontSleep is a macOS menu bar app. It toggles `disablesleep` so a closed
-lid does not sleep the Mac, on battery or on power. Click to switch;
-right-click for the menu.
+DontSleep is a macOS menu bar app. Turn it on, close the lid as-is —
+no dimming first. The Mac stays awake. The built-in screen and keyboard
+backlight turn off like clamshell, then come back as they were when you
+open it. Click the icon to switch; right-click for the menu.
 
 <p align="center">
   <img src="docs/assets/app-icon-rounded.png" alt="DontSleep app icon: a Space Black MacBook with the lid slightly open and a warm glow from the keyboard" width="220" />
@@ -24,14 +25,15 @@ right-click for the menu.
 stop **closed-lid** sleep. The only supported switch for that is
 `pmset disablesleep`, which needs root.
 
-DontSleep is that switch, in the menu bar, with sudoers limited to those
-two `pmset` lines.
+DontSleep is that switch, in the menu bar. Sleep-disable alone would
+leave the built-in panel on. Closing the lid also blanks the screen and
+keyboard light, then restores the levels you were using.
 
 ## Who it’s for
 
 Useful if you:
 
-- Close the lid and keep the Mac reachable (desk, studio, clamshell + display)
+- Close the lid and keep work running (commute, meeting room, a long agent job)
 - Want the current state visible in the menu bar, not only in a terminal
 - Do not want a password prompt every time you flip the setting
 
@@ -44,7 +46,7 @@ Not an idle-sleep app. Not signed with an Apple Developer ID
 | --- | --- |
 | Left-click | Toggle on / off |
 | Right-click | Menu |
-| Filled laptop icon | On — stays awake with the lid closed; built-in screen goes dark |
+| Filled laptop icon | On — lid closed, stays awake; screen and keyboard go dark |
 | Outline laptop icon | Off — sleeps when the lid closes |
 
 Menu bar icons follow light and dark. Language follows macOS: English,
@@ -96,10 +98,15 @@ from a shell if you want.
 
 First launch is the setup. **How to Use…** in the menu opens it again.
 
-Leave it in the menu bar. Off before the bag. **Open at Login** writes
+Leave it in the menu bar. Close the lid at whatever brightness you were
+using. Off before the bag. **Open at Login** writes
 `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`.
 
-While it is on, a closed lid will not sleep the Mac. Watch the battery.
+**Sleep on Overheat Warning** is off unless you turn it on. If macOS
+sends an overheat warning with the lid closed, DontSleep turns off and
+the Mac sleeps immediately.
+
+Watch the battery.
 
 ## Building
 

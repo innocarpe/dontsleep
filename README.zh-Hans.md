@@ -6,10 +6,11 @@
 [![macOS](https://img.shields.io/badge/macOS-14%2B-000000?style=flat)](#安装)
 [![Arch](https://img.shields.io/badge/arch-Apple%20silicon-lightgrey?style=flat)](#构建)
 
-**合上盖子也不让 Mac 睡。**
+**合上盖子就行。事情继续跑，屏幕和键盘会灭。**
 
-DontSleep 是 macOS 菜单栏应用。它开关 `disablesleep`，合盖也不会休眠。
-电池或电源都一样。单击切换，右键打开菜单。
+DontSleep 是 macOS 菜单栏应用。开着，按现在的亮度直接合盖即可。
+电脑不睡。内置屏幕和键盘背光会像合盖外接那样关掉，再打开时回到
+原来的亮度。单击切换，右键打开菜单。
 
 <p align="center">
   <img src="docs/assets/app-icon-rounded.png" alt="DontSleep 应用图标：略微打开的 Space Black 笔记本，键盘透出暖光" width="220" />
@@ -22,14 +23,14 @@ DontSleep 是 macOS 菜单栏应用。它开关 `disablesleep`，合盖也不会
 `caffeinate` 和 KeepingYouAwake 只能阻止**空闲**休眠，不能阻止**合盖**
 休眠。官方开关是需要 root 的 `pmset disablesleep`。
 
-DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确的 `pmset`
-命令。
+DontSleep 把这个开关放到菜单栏。如果只禁止休眠，内置屏幕还会亮着。
+合盖时屏幕和键盘灯也会关掉，打开后再回到你刚才的亮度。
 
 ## 适合谁
 
 适合这些情况：
 
-- 合盖后仍希望 Mac 保持在线（桌面、工作室、外接显示器）
+- 合盖后还要继续干活（通勤、会议室、跑很久的任务）
 - 希望在菜单栏看到当前状态，而不是只在终端里看
 - 不想每次切换都输入密码
 
@@ -41,7 +42,7 @@ DontSleep 把这个开关放到菜单栏，并把 sudoers 限制为两条精确�
 | --- | --- |
 | 左键 | 开启 / 关闭 |
 | 右键 | 菜单 |
-| 实心笔记本图标 | 已开启 — 合盖后仍保持唤醒 |
+| 实心笔记本图标 | 开 — 合盖也不睡，屏幕和键盘会灭 |
 | 线框笔记本图标 | 已关闭 — 合盖后休眠 |
 
 菜单栏图标跟随浅色/深色。语言跟随 macOS：英语、韩语、简体中文、日语。
@@ -89,10 +90,13 @@ cd dontsleep
 
 首次启动就是设置。菜单里的 **怎么用…** 可以再打开。
 
-留在菜单栏。装包前先关。**登录时打开** 会写入
-`~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`。
+留在菜单栏。按现在的亮度直接合盖即可。装包前先关。**登录时打开**
+会写入 `~/Library/LaunchAgents/com.innocarpe.dontsleep.plist`。
 
-开启时合盖也不会休眠。请留意电量。
+**过热警告时休眠** 默认关闭。合盖使用时如果 Mac 发出过热警告，
+DontSleep 会关掉并马上休眠。
+
+请留意电量。
 
 ## 构建
 
