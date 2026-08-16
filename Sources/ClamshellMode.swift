@@ -17,6 +17,7 @@ final class ClamshellMode {
     private var savedKeyboard: Float?
     private var lastOpenDisplay: Float?
     private var lastOpenKeyboard: Float?
+    private var needsRestore = false
     private var reblank: DispatchWorkItem?
     private var restoreWork: DispatchWorkItem?
     private var observers: [NSObjectProtocol] = []
@@ -33,8 +34,10 @@ final class ClamshellMode {
         thermal.onDanger = { [weak self] in
             self?.heatTrip()
         }
-        lid.start()
+        // Snapshot now, before lid.start() pokes. An already-open lid is
+        // not a restore — applying lastOpen* here snaps to a stale value.
         rememberOpenLevels()
+        lid.start()
         thermal.start()
 
         let nc = NSWorkspace.shared.notificationCenter
@@ -55,6 +58,9 @@ final class ClamshellMode {
     }
 
     func stop(restore: Bool) {
+        let display = savedDisplay ?? lastOpenDisplay
+        let keyboard = savedKeyboard ?? lastOpenKeyboard
+        let shouldRestore = restore && needsRestore && Lid.isClosed() != true
         running = false
         reblank?.cancel()
         reblank = nil
@@ -70,16 +76,30 @@ final class ClamshellMode {
             NSWorkspace.shared.notificationCenter.removeObserver(o)
         }
         observers.removeAll()
-        if restore {
-            restoreOutputs()
+        if shouldRestore {
+            if let display {
+                BuiltinPanel.setBrightness(display)
+            }
+            if let keyboard {
+                KeyboardLight.setBrightness(keyboard)
+            }
         }
+        forgetLevels()
+    }
+
+    private func forgetLevels() {
+        savedDisplay = nil
+        savedKeyboard = nil
+        lastOpenDisplay = nil
+        lastOpenKeyboard = nil
+        needsRestore = false
     }
 
     private func handleLid(_ closed: Bool) {
         guard running else { return }
         if closed {
             blank()
-        } else {
+        } else if needsRestore {
             restoreOutputs()
         }
     }
@@ -117,6 +137,7 @@ final class ClamshellMode {
                 savedKeyboard = now
             }
         }
+        needsRestore = true
         KeyboardLight.setBrightness(0)
         BuiltinPanel.sleepNow()
         scheduleReblank()
@@ -139,16 +160,15 @@ final class ClamshellMode {
     private func restoreOutputs() {
         reblank?.cancel()
         reblank = nil
+        guard needsRestore || savedDisplay != nil || savedKeyboard != nil else { return }
         let display = savedDisplay ?? lastOpenDisplay
         let keyboard = savedKeyboard ?? lastOpenKeyboard
-        savedDisplay = display
-        savedKeyboard = keyboard
         applyRestore(display: display, keyboard: keyboard, attempt: 0)
     }
 
     private func applyRestore(display: Float?, keyboard: Float?, attempt: Int) {
         guard running, Lid.isClosed() != true else { return }
-        if let display {
+        if attempt == 0, let display {
             BuiltinPanel.setBrightness(display)
         }
         if let keyboard {
@@ -161,10 +181,9 @@ final class ClamshellMode {
             return abs(now - keyboard) < 0.05
         }()
         if keyboardOK || attempt >= 10 {
-            if keyboardOK {
-                savedDisplay = nil
-                savedKeyboard = nil
-            }
+            savedDisplay = nil
+            savedKeyboard = nil
+            needsRestore = false
             return
         }
         restoreWork?.cancel()
@@ -185,6 +204,7 @@ final class ClamshellMode {
             restoreWork = nil
             savedDisplay = nil
             savedKeyboard = nil
+            needsRestore = false
         } else {
             restoreOutputs()
         }
