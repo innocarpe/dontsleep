@@ -36,6 +36,10 @@ enum Power {
         }
     }
 
+    static func sleepNow() {
+        _ = try? run(pmset, ["sleepnow"])
+    }
+
     private static func run(_ exe: String, _ args: [String]) throws -> String {
         let proc = Process()
         proc.executableURL = URL(fileURLWithPath: exe)

@@ -2,8 +2,8 @@
 "menu.turnOff" = "オフ";
 "menu.startAtLogin" = "ログイン時に開く";
 "menu.releaseOnHeat" = "熱いときはオフ";
-"menu.releaseOnHeat.tip" = "Mac が熱警告を出すと DontSleep が切れます。カバーを閉じるとスリープできます。";
-"menu.releaseOnHeat.confirm" = "Mac が熱くなると DontSleep が自分で切れます。そのあとカバーを閉じるとスリープできます。";
+"menu.releaseOnHeat.tip" = "カバーを閉じたまま熱くなると、DontSleep が切れてすぐスリープします。";
+"menu.releaseOnHeat.confirm" = "カバーを閉じたまま使っているとき、熱くなると DontSleep が切れ、すぐスリープします。";
 "menu.releaseOnHeat.confirmOn" = "オンにする";
 "menu.cancel" = "キャンセル";
 "menu.installHelper" = "カバー制御を許可…";

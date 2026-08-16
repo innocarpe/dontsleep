@@ -2,8 +2,8 @@
 "menu.turnOff" = "끄기";
 "menu.startAtLogin" = "로그인 시 열기";
 "menu.releaseOnHeat" = "뜨거우면 끄기";
-"menu.releaseOnHeat.tip" = "맥이 열 경고를 내면 DontSleep이 꺼집니다. 덮개를 닫으면 잠들 수 있습니다.";
-"menu.releaseOnHeat.confirm" = "맥이 뜨거워지면 DontSleep이 스스로 꺼집니다. 그다음 덮개를 닫으면 잠들 수 있습니다.";
+"menu.releaseOnHeat.tip" = "덮개를 닫아 둔 채로 뜨거워지면 DontSleep이 꺼지고 맥이 바로 잠듭니다.";
+"menu.releaseOnHeat.confirm" = "덮개를 닫아 쓰다가 맥이 뜨거워지면 DontSleep이 꺼지고, 바로 잠듭니다.";
 "menu.releaseOnHeat.confirmOn" = "켜기";
 "menu.cancel" = "취소";
 "menu.installHelper" = "덮개 제어 허용…";

@@ -2,8 +2,8 @@
 "menu.turnOff" = "关闭";
 "menu.startAtLogin" = "登录时打开";
 "menu.releaseOnHeat" = "过热时关闭";
-"menu.releaseOnHeat.tip" = "Mac 发出过热警告时 DontSleep 会关掉。之后合盖可以休眠。";
-"menu.releaseOnHeat.confirm" = "Mac 变热时 DontSleep 会自己关掉。之后合盖可以休眠。";
+"menu.releaseOnHeat.tip" = "合盖使用时如果变热，DontSleep 会关掉，电脑马上休眠。";
+"menu.releaseOnHeat.confirm" = "合盖用着的时候如果变热，DontSleep 会关掉，然后马上休眠。";
 "menu.releaseOnHeat.confirmOn" = "打开";
 "menu.cancel" = "取消";
 "menu.installHelper" = "允许合盖控制…";

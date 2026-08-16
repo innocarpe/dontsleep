@@ -177,18 +177,24 @@ final class ClamshellMode {
 
     private func heatTrip() {
         guard running, releaseOnHeat else { return }
-        if Lid.isClosed() != true {
-            restoreOutputs()
-        } else {
+        let closed = Lid.isClosed() == true
+        if closed {
             reblank?.cancel()
             reblank = nil
+            restoreWork?.cancel()
+            restoreWork = nil
             savedDisplay = nil
             savedKeyboard = nil
+        } else {
+            restoreOutputs()
         }
         running = false
         lid.stop()
         thermal.stop()
         try? Power.setSleepDisabled(false)
+        if closed {
+            Power.sleepNow()
+        }
         onReleased?()
     }
 }
