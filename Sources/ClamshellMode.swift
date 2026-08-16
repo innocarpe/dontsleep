@@ -4,12 +4,7 @@ final class ClamshellMode {
     static let heatKey = "clamshell.releaseOnHeat"
 
     var releaseOnHeat: Bool {
-        get {
-            if UserDefaults.standard.object(forKey: Self.heatKey) == nil {
-                return true
-            }
-            return UserDefaults.standard.bool(forKey: Self.heatKey)
-        }
+        get { UserDefaults.standard.bool(forKey: Self.heatKey) }
         set { UserDefaults.standard.set(newValue, forKey: Self.heatKey) }
     }
 
