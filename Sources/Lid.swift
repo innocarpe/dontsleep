@@ -27,6 +27,7 @@ enum Lid {
 
 final class LidMonitor {
     var onChange: ((Bool) -> Void)?
+    var onOpenIdle: (() -> Void)?
 
     private var last: Bool?
     private var notify: io_object_t = 0
@@ -90,9 +91,14 @@ final class LidMonitor {
 
     func poke() {
         guard let closed = Lid.isClosed() else { return }
-        if last == closed { return }
-        last = closed
-        onChange?(closed)
+        if last != closed {
+            last = closed
+            onChange?(closed)
+            return
+        }
+        if closed == false {
+            onOpenIdle?()
+        }
     }
 
     private static weak var current: LidMonitor?

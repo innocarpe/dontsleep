@@ -20,7 +20,10 @@ final class ClamshellMode {
     private var running = false
     private var savedDisplay: Float?
     private var savedKeyboard: Float?
+    private var lastOpenDisplay: Float?
+    private var lastOpenKeyboard: Float?
     private var reblank: DispatchWorkItem?
+    private var restoreWork: DispatchWorkItem?
     private var observers: [NSObjectProtocol] = []
 
     func start() {
@@ -29,10 +32,14 @@ final class ClamshellMode {
         lid.onChange = { [weak self] closed in
             self?.handleLid(closed)
         }
+        lid.onOpenIdle = { [weak self] in
+            self?.rememberOpenLevels()
+        }
         thermal.onDanger = { [weak self] in
             self?.heatTrip()
         }
         lid.start()
+        rememberOpenLevels()
         thermal.start()
 
         let nc = NSWorkspace.shared.notificationCenter
@@ -56,7 +63,10 @@ final class ClamshellMode {
         running = false
         reblank?.cancel()
         reblank = nil
+        restoreWork?.cancel()
+        restoreWork = nil
         lid.onChange = nil
+        lid.onOpenIdle = nil
         thermal.onDanger = nil
         lid.stop()
         thermal.stop()
@@ -79,6 +89,18 @@ final class ClamshellMode {
         }
     }
 
+    private func rememberOpenLevels() {
+        guard Lid.isClosed() != true else { return }
+        if let display = BuiltinPanel.brightness(), display > 0.02 {
+            lastOpenDisplay = display
+        }
+        if let keyboard = KeyboardLight.brightness(),
+           keyboard > 0.02,
+           !KeyboardLight.isSuppressed() {
+            lastOpenKeyboard = keyboard
+        }
+    }
+
     private func displayChanged() {
         guard running, Lid.isClosed() == true else { return }
         blank()
@@ -90,10 +112,15 @@ final class ClamshellMode {
             return
         }
         if savedDisplay == nil {
-            savedDisplay = BuiltinPanel.brightness()
+            savedDisplay = lastOpenDisplay ?? BuiltinPanel.brightness()
         }
         if savedKeyboard == nil {
-            savedKeyboard = KeyboardLight.brightness()
+            let now = KeyboardLight.brightness()
+            if let lastOpenKeyboard {
+                savedKeyboard = lastOpenKeyboard
+            } else if let now, now > 0.02, !KeyboardLight.isSuppressed() {
+                savedKeyboard = now
+            }
         }
         KeyboardLight.setBrightness(0)
         BuiltinPanel.sleepNow()
@@ -117,14 +144,40 @@ final class ClamshellMode {
     private func restoreOutputs() {
         reblank?.cancel()
         reblank = nil
-        if let display = savedDisplay {
+        let display = savedDisplay ?? lastOpenDisplay
+        let keyboard = savedKeyboard ?? lastOpenKeyboard
+        savedDisplay = display
+        savedKeyboard = keyboard
+        applyRestore(display: display, keyboard: keyboard, attempt: 0)
+    }
+
+    private func applyRestore(display: Float?, keyboard: Float?, attempt: Int) {
+        guard running, Lid.isClosed() != true else { return }
+        if let display {
             BuiltinPanel.setBrightness(display)
         }
-        if let keyboard = savedKeyboard {
+        if let keyboard {
             KeyboardLight.setBrightness(keyboard)
         }
-        savedDisplay = nil
-        savedKeyboard = nil
+        let keyboardOK: Bool = {
+            guard let keyboard else { return true }
+            if KeyboardLight.isSuppressed() { return false }
+            guard let now = KeyboardLight.brightness() else { return false }
+            return abs(now - keyboard) < 0.05
+        }()
+        if keyboardOK || attempt >= 10 {
+            if keyboardOK {
+                savedDisplay = nil
+                savedKeyboard = nil
+            }
+            return
+        }
+        restoreWork?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            self?.applyRestore(display: display, keyboard: keyboard, attempt: attempt + 1)
+        }
+        restoreWork = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: work)
     }
 
     private func heatTrip() {

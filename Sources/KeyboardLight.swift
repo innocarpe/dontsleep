@@ -37,10 +37,25 @@ enum KeyboardLight {
 
     static func setBrightness(_ value: Float) {
         guard let client, let id = keyboardID() else { return }
+        let clamped = max(0, min(1, value))
+        let commitSel = NSSelectorFromString("setBrightness:fadeSpeed:commit:forKeyboard:")
+        if client.responds(to: commitSel) {
+            typealias Imp = @convention(c) (AnyObject, Selector, Float, Int32, ObjCBool, UInt64) -> ObjCBool
+            let fn = unsafeBitCast(client.method(for: commitSel), to: Imp.self)
+            _ = fn(client, commitSel, clamped, 0, true, id)
+        }
         let sel = NSSelectorFromString("setBrightness:forKeyboard:")
         guard client.responds(to: sel) else { return }
         typealias Imp = @convention(c) (AnyObject, Selector, Float, UInt64) -> ObjCBool
         let fn = unsafeBitCast(client.method(for: sel), to: Imp.self)
-        _ = fn(client, sel, max(0, min(1, value)), id)
+        _ = fn(client, sel, clamped, id)
+    }
+
+    static func isSuppressed() -> Bool {
+        guard let client, let id = keyboardID() else { return false }
+        let sel = NSSelectorFromString("isBacklightSuppressedOnKeyboard:")
+        guard client.responds(to: sel) else { return false }
+        typealias Imp = @convention(c) (AnyObject, Selector, UInt64) -> ObjCBool
+        return unsafeBitCast(client.method(for: sel), to: Imp.self)(client, sel, id).boolValue
     }
 }
