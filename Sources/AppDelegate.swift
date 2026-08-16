@@ -10,11 +10,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var offItem: NSMenuItem!
     private var loginMenuItem: NSMenuItem!
     private var setupItem: NSMenuItem!
+    private var heatItem: NSMenuItem!
     private var lastOn: Bool?
     private var didRender = false
     private var poppingMenu = false
     private var helperReady = false
     private var onboarding = OnboardingController()
+    private let clamshell = ClamshellMode()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let others = NSRunningApplication.runningApplications(withBundleIdentifier: AppIdentity.bundleID)
@@ -54,6 +56,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
         loginMenuItem = item(L10n.string("menu.startAtLogin"), action: #selector(toggleLogin), key: "")
         menu.addItem(loginMenuItem)
+        heatItem = item(L10n.string("menu.releaseOnHeat"), action: #selector(toggleHeat), key: "")
+        menu.addItem(heatItem)
         setupItem = item(L10n.string("menu.installHelper"), action: #selector(installHelper), key: "")
         menu.addItem(setupItem)
         menu.addItem(item(L10n.string("menu.howTo"), action: #selector(showHowTo), key: "?"))
@@ -67,8 +71,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         timer?.tolerance = 2
 
+        clamshell.onReleased = { [weak self] in
+            guard let self else { return }
+            self.didRender = false
+            self.refresh()
+        }
+
         DispatchQueue.main.async { [weak self] in
             self?.startFirstRun()
+        }
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        clamshell.stop(restore: true)
+        if lastOn == true {
+            try? Power.setSleepDisabled(false)
         }
     }
 
@@ -106,6 +123,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         LoginItem.setEnabled(!LoginItem.isEnabled)
         loginMenuItem.state = LoginItem.isEnabled ? .on : .off
     }
+    @objc private func toggleHeat(_ sender: NSMenuItem) {
+        clamshell.releaseOnHeat.toggle()
+        heatItem.state = clamshell.releaseOnHeat ? .on : .off
+    }
     @objc private func installHelper() { presentOnboarding(kind: .permission) }
     @objc private func showHowTo() { presentOnboarding(kind: .howTo) }
     @objc private func quit() { NSApp.terminate(nil) }
@@ -132,6 +153,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         } else if !helperReady {
             presentOnboarding(kind: .permission)
         }
+        if case .success(true) = Power.sleepDisabled() {
+            clamshell.start()
+        }
     }
 
     private func presentOnboarding(kind: OnboardingModel.Kind) {
@@ -145,7 +169,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return
         }
         do {
-            try Power.setSleepDisabled(disabled)
+            if disabled {
+                try Power.setSleepDisabled(true)
+                clamshell.start()
+            } else {
+                clamshell.stop(restore: true)
+                try Power.setSleepDisabled(false)
+            }
         } catch {
             present(error)
         }
@@ -170,6 +200,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         loginMenuItem.state = LoginItem.isEnabled ? .on : .off
+        heatItem.state = clamshell.releaseOnHeat ? .on : .off
         setupItem.isHidden = helperReady
         guard !didRender || lastOn != on else { return }
         didRender = true

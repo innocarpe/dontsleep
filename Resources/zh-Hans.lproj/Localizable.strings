@@ -1,16 +1,17 @@
 "menu.turnOn" = "开启";
 "menu.turnOff" = "关闭";
 "menu.startAtLogin" = "登录时打开";
+"menu.releaseOnHeat" = "过热时关闭";
 "menu.installHelper" = "允许合盖控制…";
 "menu.howTo" = "怎么用…";
 "menu.refresh" = "刷新";
 "menu.quit" = "退出";
 
-"menu.status.on" = "开 — 合盖也不睡";
+"menu.status.on" = "开 — 合盖也不睡，屏幕会灭";
 "menu.status.off" = "关 — 合盖就睡";
 "menu.status.unknown" = "状态未知";
 
-"tooltip.on" = "开。合盖也不睡。";
+"tooltip.on" = "开。合盖也不睡。内置屏幕会灭。";
 "tooltip.off" = "关。合盖就睡。";
 "tooltip.unknown" = "读不到状态";
 
@@ -43,6 +44,7 @@
 "onboard.usage.title" = "菜单栏";
 "onboard.usage.on" = "开。合盖也不睡。";
 "onboard.usage.off" = "关。合盖就睡。";
+"onboard.usage.lid" = "合盖后内置屏幕会灭。事情还在跑。";
 "onboard.usage.click" = "点图标就能开关。";
 "onboard.usage.menu" = "右键是剩下的菜单。";
 

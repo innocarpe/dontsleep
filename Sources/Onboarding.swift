@@ -312,6 +312,7 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 16) {
                 usageRow(on: true, text: L10n.string("onboard.usage.on"))
                 usageRow(on: false, text: L10n.string("onboard.usage.off"))
+                Text(L10n.string("onboard.usage.lid"))
                 Text(L10n.string("onboard.usage.click"))
                 Text(L10n.string("onboard.usage.menu"))
             }

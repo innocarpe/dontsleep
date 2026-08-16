@@ -1,16 +1,17 @@
 "menu.turnOn" = "オン";
 "menu.turnOff" = "オフ";
 "menu.startAtLogin" = "ログイン時に開く";
+"menu.releaseOnHeat" = "熱いときはオフ";
 "menu.installHelper" = "カバー制御を許可…";
 "menu.howTo" = "使い方…";
 "menu.refresh" = "更新";
 "menu.quit" = "終了";
 
-"menu.status.on" = "オン — カバーを閉じてもスリープしない";
+"menu.status.on" = "オン — カバーを閉じてもスリープしない。画面は消える";
 "menu.status.off" = "オフ — カバーを閉じるとスリープする";
 "menu.status.unknown" = "状態不明";
 
-"tooltip.on" = "オン。カバーを閉じてもスリープしません。";
+"tooltip.on" = "オン。カバーを閉じてもスリープしません。内蔵画面は消えます。";
 "tooltip.off" = "オフ。カバーを閉じるとスリープします。";
 "tooltip.unknown" = "状態を読めません";
 
@@ -43,6 +44,7 @@
 "onboard.usage.title" = "メニューバー";
 "onboard.usage.on" = "オン。カバーを閉じてもスリープしません。";
 "onboard.usage.off" = "オフ。カバーを閉じるとスリープします。";
+"onboard.usage.lid" = "カバーを閉じると内蔵画面だけ消えます。作業は続きます。";
 "onboard.usage.click" = "アイコンをクリックで切り替えます。";
 "onboard.usage.menu" = "右クリックが残りのメニューです。";
 

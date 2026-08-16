@@ -28,6 +28,7 @@ swiftc -O \
   -framework AppKit \
   -framework SwiftUI \
   -framework Combine \
+  -framework IOKit \
   -o "${macos}/DontSleep" \
   "${root}"/Sources/*.swift
 

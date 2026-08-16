@@ -1,16 +1,17 @@
 "menu.turnOn" = "Turn On";
 "menu.turnOff" = "Turn Off";
 "menu.startAtLogin" = "Open at Login";
+"menu.releaseOnHeat" = "Off When Hot";
 "menu.installHelper" = "Allow Lid Control…";
 "menu.howTo" = "How to Use…";
 "menu.refresh" = "Refresh";
 "menu.quit" = "Quit";
 
-"menu.status.on" = "On — lid closed, stays awake";
+"menu.status.on" = "On — lid closed, stays awake, screen dark";
 "menu.status.off" = "Off — lid closed, sleeps";
 "menu.status.unknown" = "Status unknown";
 
-"tooltip.on" = "On. Closed lid stays awake.";
+"tooltip.on" = "On. Closed lid stays awake. Built-in screen goes dark.";
 "tooltip.off" = "Off. Closed lid sleeps.";
 "tooltip.unknown" = "Couldn't read status";
 
@@ -43,6 +44,7 @@
 "onboard.usage.title" = "The menu bar";
 "onboard.usage.on" = "On. Lid closed, stays awake.";
 "onboard.usage.off" = "Off. Lid closed, sleeps.";
+"onboard.usage.lid" = "Close the lid and the built-in screen goes dark. Work keeps running.";
 "onboard.usage.click" = "Click the icon to switch.";
 "onboard.usage.menu" = "Right-click for the rest.";
 

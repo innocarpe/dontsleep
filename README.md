@@ -44,7 +44,7 @@ Not an idle-sleep app. Not signed with an Apple Developer ID
 | --- | --- |
 | Left-click | Toggle on / off |
 | Right-click | Menu |
-| Filled laptop icon | On — stays awake with the lid closed |
+| Filled laptop icon | On — stays awake with the lid closed; built-in screen goes dark |
 | Outline laptop icon | Off — sleeps when the lid closes |
 
 Menu bar icons follow light and dark. Language follows macOS: English,

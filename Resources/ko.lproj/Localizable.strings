@@ -1,16 +1,17 @@
 "menu.turnOn" = "켜기";
 "menu.turnOff" = "끄기";
 "menu.startAtLogin" = "로그인 시 열기";
+"menu.releaseOnHeat" = "뜨거우면 끄기";
 "menu.installHelper" = "덮개 제어 허용…";
 "menu.howTo" = "쓰는 법…";
 "menu.refresh" = "새로고침";
 "menu.quit" = "종료";
 
-"menu.status.on" = "켜짐 — 덮개 닫아도 안 잠듦";
+"menu.status.on" = "켜짐 — 덮개 닫아도 안 잠듦, 화면은 꺼짐";
 "menu.status.off" = "꺼짐 — 덮개 닫으면 잠";
 "menu.status.unknown" = "상태 불명";
 
-"tooltip.on" = "켜짐. 덮개 닫아도 안 잠듦.";
+"tooltip.on" = "켜짐. 덮개 닫아도 안 잠듦. 내장 화면은 꺼짐.";
 "tooltip.off" = "꺼짐. 덮개 닫으면 잠.";
 "tooltip.unknown" = "상태를 못 읽음";
 
@@ -43,6 +44,7 @@
 "onboard.usage.title" = "메뉴바";
 "onboard.usage.on" = "켜짐. 덮개 닫아도 안 잠듦.";
 "onboard.usage.off" = "꺼짐. 덮개 닫으면 잠.";
+"onboard.usage.lid" = "덮개를 닫으면 내장 화면만 꺼집니다. 일은 계속됩니다.";
 "onboard.usage.click" = "아이콘을 누르면 켜고 끕니다.";
 "onboard.usage.menu" = "오른쪽 클릭이 나머지 메뉴입니다.";
 
